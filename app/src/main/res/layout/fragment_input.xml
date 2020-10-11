@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="4dp"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/inputData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter an item here"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btnInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/inputData"
+        android:layout_marginTop="10dp"
+        android:text="Add item" />
+</RelativeLayout>
