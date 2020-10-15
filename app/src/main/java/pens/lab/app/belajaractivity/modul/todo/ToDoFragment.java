@@ -52,12 +52,11 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         addButton = fragmentView.findViewById(R.id.btnAdd);
         clearButton = fragmentView.findViewById(R.id.btnClear);
 
-        //if(returnedList == null)
+        if(returnedList == null)
             ListElementsArrayList = new ArrayList<>(Arrays.asList(ListElements));
-        //else{
-        //    ListElementsArrayList = returnedList;
-        //    adapter.notifyDataSetChanged();
-        //}
+        else{
+            ListElementsArrayList = returnedList;
+        }
 
         adapter = new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, ListElementsArrayList);
         listView.setAdapter(adapter);
