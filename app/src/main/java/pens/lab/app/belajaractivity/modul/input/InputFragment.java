@@ -15,16 +15,20 @@ import java.util.ArrayList;
 
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
+import pens.lab.app.belajaractivity.model.Task;
 import pens.lab.app.belajaractivity.modul.todo.ToDoActivity;
+import pens.lab.app.belajaractivity.utils.Database;
 
 public class InputFragment extends BaseFragment<InputActivity, InputContract.Presenter> implements InputContract.View {
 
     Button inputButton;
-    EditText newData;
-    ArrayList<String> todo;
+    EditText newDataTitle;
+    EditText newDataDescription;
+    ArrayList<Task> todo;
+    Database db;
 
-    public InputFragment(ArrayList<String> toDo) {
-        this.todo = toDo;
+    public InputFragment() {
+        this.db = Database.getInstance();
     }
 
     @Nullable
@@ -35,8 +39,10 @@ public class InputFragment extends BaseFragment<InputActivity, InputContract.Pre
         mPresenter = new InputPresenter(this);
         mPresenter.start();
 
+        todo = db.getTasks();
         inputButton = fragmentView.findViewById(R.id.btnInput);
-        newData = fragmentView.findViewById(R.id.inputData);
+        newDataTitle = fragmentView.findViewById(R.id.inputTitle);
+        newDataDescription = fragmentView.findViewById(R.id.inputDescription);
 
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,10 +58,9 @@ public class InputFragment extends BaseFragment<InputActivity, InputContract.Pre
 
     @Override
     public void addElement(){
-        if(newData.getText() != null)
-            todo.add(newData.getText().toString());
+        if(newDataTitle.getText() != null && newDataDescription.getText() != null)
+            db.addTask(newDataTitle.getText().toString(), newDataDescription.getText().toString());
         Intent returnIntent = new Intent(activity, ToDoActivity.class);
-        returnIntent.putStringArrayListExtra("returnData", todo);
         startActivity(returnIntent);
     }
 

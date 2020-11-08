@@ -1,5 +1,9 @@
 package pens.lab.app.belajaractivity.modul.todo;
 
+import java.util.ArrayList;
+
+import pens.lab.app.belajaractivity.model.Task;
+
 public class ToDoPresenter implements ToDoContract.Presenter{
     private final ToDoContract.View view;
 
@@ -19,7 +23,7 @@ public class ToDoPresenter implements ToDoContract.Presenter{
         view.emptyList();
     }
 
-    public void editList(String oldItem, final int index){
+    public void editList(Task oldItem, final int index){
         view.showInputBox(oldItem, index);
     }
 

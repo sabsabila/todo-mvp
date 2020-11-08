@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="4dp"
-    android:orientation="vertical" >
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Task Title"/>
 
     <EditText
-        android:id="@+id/inputData"
+        android:id="@+id/inputTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter an item here"
-        android:inputType="text" />
+        android:layout_below="@+id/name_title"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/description_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputTitle"
+        android:padding="10dp"
+        android:text="Description"/>
+
+    <EditText
+        android:id="@+id/inputDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description_title"
+        android:ems="10"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/btnInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/inputData"
-        android:layout_marginTop="10dp"
-        android:text="Add item" />
+        android:layout_below="@+id/inputDescription"
+        android:layout_marginTop="0dp"
+        android:text="Add"
+        android:paddingTop="12dp"/>
+
 </RelativeLayout>
