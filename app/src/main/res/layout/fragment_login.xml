@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/loginTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login Page"
+            android:layout_marginTop="-100dp"
+            android:textColor="@color/darkblue"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/loginSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To Do List App | Sabila Jamal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="80dp"
+            android:textColor="@color/blueOne"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/username_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Username"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/blueOne"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            />
+        <TextView
+            android:id="@+id/password_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Password"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/blueOne"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/bt_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/textWhiteColor"
+            android:background="@color/blueOne"
+            android:text="@string/login"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

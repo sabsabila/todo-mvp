@@ -1,17 +1,12 @@
-package pens.lab.app.belajaractivity.modul.todo;
+package pens.lab.app.belajaractivity.modul.login;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 
-import java.util.ArrayList;
-
 import pens.lab.app.belajaractivity.base.BaseFragmentHolderActivity;
-import pens.lab.app.belajaractivity.model.Task;
 
 
-public class ToDoActivity extends BaseFragmentHolderActivity {
-    ToDoFragment toDoFragment;
+public class LoginActivity extends BaseFragmentHolderActivity {
+    LoginFragment loginFragment;
     private final int UPDATE_REQUEST = 2019;
 
     @Override
@@ -20,11 +15,15 @@ public class ToDoActivity extends BaseFragmentHolderActivity {
 
         btBack.setVisibility(View.GONE);
         btOptionMenu.setVisibility(View.GONE);
+//        ivIcon.setImageResource(R.drawable.....);
         ivIcon.setVisibility(View.VISIBLE);
 
-        toDoFragment = new ToDoFragment();
-        setCurrentFragment(toDoFragment, true);
+        loginFragment = new LoginFragment();
+        setCurrentFragment(loginFragment, false);
 
     }
+
+
+
 
 }

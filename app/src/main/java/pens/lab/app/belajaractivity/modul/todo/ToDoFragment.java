@@ -7,17 +7,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
@@ -30,17 +34,19 @@ import pens.lab.app.belajaractivity.utils.RecyclerViewAdapterTodolist;
 
 public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View {
 
-    Button addButton;
-    Button clearButton;
-    ArrayAdapter adapter;
+    ImageButton addButton;
+    ImageButton clearButton;
+    TextView title;
     ArrayList<Task> data;
     RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Database db;
+    private String username;
 
     public ToDoFragment() {
         this.db = Database.getInstance();
+        this.username = db.getLoggedInUser();
     }
 
     @Nullable
@@ -54,6 +60,8 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         data = db.getTasks();
         addButton = fragmentView.findViewById(R.id.btnAdd);
         clearButton = fragmentView.findViewById(R.id.btnClear);
+        title = fragmentView.findViewById(R.id.titleText);
+        title.setText("Hi, " + username);
 
         mRecyclerView = fragmentView.findViewById(R.id.recyclerViewTodolist);
         mRecyclerView.setHasFixedSize(true);
@@ -102,19 +110,19 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     public void showAlertDialog(final int position){
         final int index = position;
 
-        new AlertDialog.Builder(activity)
-                .setIcon(android.R.drawable.ic_delete)
-                .setTitle("Delete Item")
-                .setMessage("Are you sure you want to delete this item ?")
-                .setNegativeButton("No", null)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        db.deleteTask(index);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                })
-                .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setTitle("Delete Item");
+        builder.setMessage("Are you sure you want to delete this item ?");
+        builder.setPositiveButton(Html.fromHtml("<font color='#20a860'>Yes</font>"), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                db.deleteTask(index);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton(Html.fromHtml("<font color='#eb5334'>No</font>"), null);
+        builder.create();
+        builder.show();
     }
 
     @Override

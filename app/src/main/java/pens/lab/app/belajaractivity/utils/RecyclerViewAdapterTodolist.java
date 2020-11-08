@@ -25,6 +25,7 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
             tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override

@@ -6,6 +6,7 @@ import pens.lab.app.belajaractivity.model.Task;
 
 public class Database {
     private ArrayList<Task> tasks;
+    private String loggedInUser;
     private static Database instance;
     private static int id = 1;
 
@@ -42,6 +43,14 @@ public class Database {
         Task newTask = new Task(id, title, desc);
         tasks.add(newTask);
         id++;
+    }
+
+    public String getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(String loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 
     public void deleteTask(int idx){

@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/BlueTheme">
         <activity android:name=".modul.input.InputActivity"></activity>
-        <activity android:name=".modul.todo.ToDoActivity">
+        <activity android:name=".modul.todo.ToDoActivity"></activity>
+        <activity android:name=".modul.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
