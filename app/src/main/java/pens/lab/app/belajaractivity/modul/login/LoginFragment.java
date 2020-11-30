@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
 import pens.lab.app.belajaractivity.modul.todo.ToDoActivity;
+import pens.lab.app.belajaractivity.utils.session.UserSessionRepositoryRepository;
 
 
 /**
@@ -34,7 +35,7 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         fragmentView = inflater.inflate(R.layout.fragment_login, container, false);
-        mPresenter = new LoginPresenter(this);
+        mPresenter = new LoginPresenter(this, new UserSessionRepositoryRepository(getActivity()));
         mPresenter.start();
 
         etEmail = fragmentView.findViewById(R.id.et_email);
@@ -69,6 +70,4 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
             startActivity(intent);
             activity.finish();
     }
-
-
 }
