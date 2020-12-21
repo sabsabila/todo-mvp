@@ -8,12 +8,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.model.Task;
 
 public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerViewAdapterTodolist.MyViewHolder> {
-    private static ArrayList<Task> mDataset;
+    private static List<Task> mDataset;
     private static RecyclerViewAdapterTodolist.MyClickListener myClickListener;
     private static RecyclerViewAdapterTodolist.MyLongClickListener myLongClickListener;
 
@@ -30,20 +31,22 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
 
         @Override
         public void onClick(View view) {
-            int position =getAdapterPosition();
+            int position = mDataset.get(getAdapterPosition()).getId();
             myClickListener.onItemClick(position, view);
         }
 
         @Override
         public boolean onLongClick(View view) {
-            int position =getAdapterPosition();
+            int position =  mDataset.get(getAdapterPosition()).getId();
             myLongClickListener.onItemLongClick(position, view);
             return true;
         }
     }
 
-    public RecyclerViewAdapterTodolist(ArrayList<Task> myDataset) {
+    public RecyclerViewAdapterTodolist(List<Task> myDataset, RecyclerViewAdapterTodolist.MyClickListener onClickListener, RecyclerViewAdapterTodolist.MyLongClickListener longClickListener) {
         mDataset = myDataset;
+        myClickListener = onClickListener;
+        myLongClickListener = longClickListener;
     }
 
     @Override
@@ -71,9 +74,9 @@ public class RecyclerViewAdapterTodolist extends RecyclerView.Adapter<RecyclerVi
         this.myLongClickListener = myLongClickListener;
     }
     public interface MyClickListener {
-        public void onItemClick(int position, View v);
+        void onItemClick(int position, View v);
     }
     public interface MyLongClickListener {
-        public void onItemLongClick(int position, View v);
+        void onItemLongClick(int position, View v);
     }
 }

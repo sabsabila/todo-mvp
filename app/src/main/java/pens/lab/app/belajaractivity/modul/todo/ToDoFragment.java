@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,29 +25,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
 import pens.lab.app.belajaractivity.model.Task;
+import pens.lab.app.belajaractivity.modul.edit.EditActivity;
 import pens.lab.app.belajaractivity.modul.input.InputActivity;
 import pens.lab.app.belajaractivity.utils.Database;
 import pens.lab.app.belajaractivity.utils.RecyclerViewAdapterTodolist;
+import pens.lab.app.belajaractivity.utils.UtilProvider;
 
-public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View {
+public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View, RecyclerViewAdapterTodolist.MyClickListener , RecyclerViewAdapterTodolist.MyLongClickListener{
 
     ImageButton addButton;
-    ImageButton clearButton;
     TextView title;
-    ArrayList<Task> data;
     RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Database db;
     private String username;
 
     public ToDoFragment() {
-        this.db = Database.getInstance();
-        this.username = db.getLoggedInUser();
+        this.username = UtilProvider.getSharedPreferencesUtil().getUsername();
     }
 
     @Nullable
@@ -56,10 +55,7 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         fragmentView = inflater.inflate(R.layout.fragment_todolist, container, false);
         mPresenter = new ToDoPresenter(this);
         mPresenter.start();
-
-        data = db.getTasks();
         addButton = fragmentView.findViewById(R.id.btnAdd);
-        clearButton = fragmentView.findViewById(R.id.btnClear);
         title = fragmentView.findViewById(R.id.titleText);
         title.setText("Hi, " + username);
 
@@ -70,37 +66,14 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
 
         setTitle("Todo List");
 
-        mAdapter = new RecyclerViewAdapterTodolist(data);
-        mRecyclerView.setAdapter(mAdapter);
-
-        ((RecyclerViewAdapterTodolist) mAdapter).setOnItemClickListener(new RecyclerViewAdapterTodolist.MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                mPresenter.editList(data.get(position), position);
-            }
-        });
-
-        ((RecyclerViewAdapterTodolist) mAdapter).setOnItemLongClickListener(new RecyclerViewAdapterTodolist.MyLongClickListener() {
-            @Override
-            public void onItemLongClick(int position, View v) {
-                mPresenter.deleteItem(position);
-            }
-        });
-
+        startLoading();
+        mPresenter.getTasks();
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.inputItem();
             }
         });
-
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.clearList();
-            }
-        });
-
         setTitle("To Do List");
 
         return fragmentView;
@@ -116,8 +89,8 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         builder.setMessage("Are you sure you want to delete this item ?");
         builder.setPositiveButton(Html.fromHtml("<font color='#20a860'>Yes</font>"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
-                db.deleteTask(index);
-                mAdapter.notifyDataSetChanged();
+                startLoading();
+                mPresenter.deleteItem(index);
             }
         });
         builder.setNegativeButton(Html.fromHtml("<font color='#eb5334'>No</font>"), null);
@@ -126,29 +99,29 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     }
 
     @Override
-    public void showInputBox(final Task oldItem, final int index) {
-        final Dialog dialog = new Dialog(activity);
-        dialog.setTitle("Input Box");
-        dialog.setContentView(R.layout.edit_dialog);
+    public void setTask(List<Task> task) {
+        mRecyclerView.setAdapter(new RecyclerViewAdapterTodolist(task, this, this));
+    }
 
-        TextView txtMessage = (TextView) dialog.findViewById(R.id.txtmessage);
-        txtMessage.setText("Update item");
-        txtMessage.setTextColor(Color.parseColor("#000000"));
+    @Override
+    public void startLoading() {
+        fragmentView.findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
+    }
 
-        final EditText title = (EditText) dialog.findViewById(R.id.txtTitle);
-        final EditText desc = (EditText) dialog.findViewById(R.id.txtDescription);
-        title.setText(oldItem.getTitle());
-        desc.setText(oldItem.getDescription());
-        Button bt = (Button) dialog.findViewById(R.id.btdone);
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                db.editById(oldItem.getId(), title.getText().toString(), desc.getText().toString());
-                mAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
+    @Override
+    public void endLoading() {
+        fragmentView.findViewById(R.id.progress_bar).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(activity, message,Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void returnSuccess(String message) {
+        Toast.makeText(activity, message,Toast.LENGTH_SHORT);
+        startActivity(new Intent(activity, ToDoActivity.class));
     }
 
     @Override
@@ -163,9 +136,19 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     }
 
     @Override
-    public void emptyList(){
-        db.deleteAll();
-        mAdapter.notifyDataSetChanged();
+    public void redirectToEdit(int id) {
+        Intent intent = new Intent(activity, EditActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
     }
 
+    @Override
+    public void onItemClick(int position, View v) {
+        mPresenter.editList(position);
+    }
+
+    @Override
+    public void onItemLongClick(int position, View v) {
+        showAlertDialog(position);
+    }
 }

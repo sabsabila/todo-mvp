@@ -40,7 +40,7 @@ public class Database {
     }
 
     public void addTask(String title, String desc){
-        Task newTask = new Task(id, title, desc);
+        Task newTask = new Task(title, desc);
         tasks.add(newTask);
         id++;
     }

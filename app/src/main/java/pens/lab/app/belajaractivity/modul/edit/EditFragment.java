@@ -1,4 +1,4 @@
-package pens.lab.app.belajaractivity.modul.input;
+package pens.lab.app.belajaractivity.modul.edit;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,17 +16,21 @@ import java.util.ArrayList;
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
 import pens.lab.app.belajaractivity.model.Task;
+import pens.lab.app.belajaractivity.modul.input.InputActivity;
+import pens.lab.app.belajaractivity.modul.input.InputContract;
+import pens.lab.app.belajaractivity.modul.input.InputPresenter;
 import pens.lab.app.belajaractivity.modul.todo.ToDoActivity;
 import pens.lab.app.belajaractivity.utils.Database;
 
-public class InputFragment extends BaseFragment<InputActivity, InputContract.Presenter> implements InputContract.View {
+public class EditFragment extends BaseFragment<InputActivity, EditContract.Presenter> implements EditContract.View {
 
     Button inputButton;
     EditText newDataTitle;
     EditText newDataDescription;
+    int id;
 
-    public InputFragment() {
-
+    public EditFragment(int id) {
+        this.id = id;
     }
 
     @Nullable
@@ -35,10 +38,12 @@ public class InputFragment extends BaseFragment<InputActivity, InputContract.Pre
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         fragmentView = inflater.inflate(R.layout.fragment_input, container, false);
-        mPresenter = new InputPresenter(this);
+        mPresenter = new EditPresenter(this);
         mPresenter.start();
 
+        mPresenter.getTask(id);
         inputButton = fragmentView.findViewById(R.id.btnInput);
+        inputButton.setText("Save");
         newDataTitle = fragmentView.findViewById(R.id.inputTitle);
         newDataDescription = fragmentView.findViewById(R.id.inputDescription);
 
@@ -48,7 +53,7 @@ public class InputFragment extends BaseFragment<InputActivity, InputContract.Pre
                 if(newDataTitle.getText() != null && newDataDescription.getText() != null){
                     Task newTask = new Task(newDataTitle.getText().toString(), newDataDescription.getText().toString());
                     startLoading();
-                    mPresenter.performAdd(newTask);
+                    mPresenter.performEdit(id, newTask);
                 }
             }
         });
@@ -80,7 +85,13 @@ public class InputFragment extends BaseFragment<InputActivity, InputContract.Pre
     }
 
     @Override
-    public void setPresenter(InputContract.Presenter presenter) {
+    public void setTask(Task task) {
+        newDataTitle.setText(task.getTitle());
+        newDataDescription.setText(task.getDescription());
+    }
+
+    @Override
+    public void setPresenter(EditContract.Presenter presenter) {
 
     }
 }

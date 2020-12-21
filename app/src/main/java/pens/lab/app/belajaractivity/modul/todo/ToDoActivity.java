@@ -11,18 +11,14 @@ import pens.lab.app.belajaractivity.model.Task;
 
 
 public class ToDoActivity extends BaseFragmentHolderActivity {
-    ToDoFragment toDoFragment;
-    private final int UPDATE_REQUEST = 2019;
-
     @Override
     protected void initializeFragment() {
         initializeView();
 
         btBack.setVisibility(View.GONE);
         btOptionMenu.setVisibility(View.GONE);
-        ivIcon.setVisibility(View.VISIBLE);
 
-        toDoFragment = new ToDoFragment();
+        ToDoFragment toDoFragment = new ToDoFragment();
         setCurrentFragment(toDoFragment, true);
 
     }

@@ -1,4 +1,4 @@
-package pens.lab.app.belajaractivity.modul.input;
+package pens.lab.app.belajaractivity.modul.edit;
 
 import android.util.Log;
 
@@ -13,11 +13,11 @@ import pens.lab.app.belajaractivity.constant.ApiConstant;
 import pens.lab.app.belajaractivity.model.Task;
 import pens.lab.app.belajaractivity.response.PostTaskResponse;
 
-public class InputPresenter implements InputContract.Presenter{
+public class EditPresenter implements EditContract.Presenter{
 
-    private final InputContract.View view;
+    private final EditContract.View view;
 
-    public InputPresenter(InputContract.View view) {
+    public EditPresenter(EditContract.View view) {
         this.view = view;
     }
 
@@ -25,9 +25,9 @@ public class InputPresenter implements InputContract.Presenter{
     public void start() {}
 
     @Override
-    public void performAdd(Task task){
+    public void performEdit(int id, Task task){
         JSONObject taskJson = createTaskJson(task);
-        AndroidNetworking.post(ApiConstant.BASE_URL)
+        AndroidNetworking.put(ApiConstant.BASE_URL + "/" + id)
                 .addJSONObjectBody(taskJson)
                 .build()
                 .getAsObject(PostTaskResponse.class, new ParsedRequestListener<PostTaskResponse>() {
@@ -40,6 +40,27 @@ public class InputPresenter implements InputContract.Presenter{
                     @Override
                     public void onError(ANError error) {
                         view.showError("Failed to save data !");
+                        view.endLoading();
+                        Log.d("tag", error.getMessage() + error.getErrorCode());
+                    }
+                });
+    }
+
+    @Override
+    public void getTask(int id) {
+        view.startLoading();
+        AndroidNetworking.get(ApiConstant.BASE_URL + "/" + id)
+                .build()
+                .getAsObject(PostTaskResponse.class, new ParsedRequestListener<PostTaskResponse>() {
+                    @Override
+                    public void onResponse(PostTaskResponse response) {
+                        Log.d("tag", response.status);
+                        view.setTask(response.data);
+                        view.endLoading();
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        view.showError("Failed to load data !");
                         view.endLoading();
                         Log.d("tag", error.getMessage() + error.getErrorCode());
                     }

@@ -6,9 +6,10 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/babyBlue"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp">
 
@@ -22,7 +23,7 @@
                 android:id="@+id/layoutlinier"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -39,12 +40,11 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:maxLines="1"
-                    android:paddingLeft="6dp"
                     android:text="Title"
                     android:textColor="?attr/textWhiteColor"
-                    android:textSize="18sp" />
+                    android:textSize="12pt" />
 
             </LinearLayout>
 

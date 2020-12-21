@@ -20,7 +20,6 @@ public class InputActivity extends BaseFragmentHolderActivity {
 
         //btBack.setVisibility(View.GONE);
         btOptionMenu.setVisibility(View.GONE);
-        ivIcon.setVisibility(View.VISIBLE);
 
         inputFragment = new InputFragment();
         setCurrentFragment(inputFragment, true);

@@ -2,37 +2,39 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_input"
+    android:padding="20dp">
 
-    <TextView
-        android:id="@+id/name_title"
+    <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="Task Title"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"/>
 
     <EditText
         android:id="@+id/inputTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/name_title"
-        android:ems="10"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="Title"
         android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/description_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/inputTitle"
-        android:padding="10dp"
-        android:text="Description"/>
 
     <EditText
         android:id="@+id/inputDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/description_title"
-        android:ems="10"
+        android:minHeight="50dp"
+        android:layout_below="@+id/inputTitle"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginBottom="50dp"
+        android:hint="Description"
         android:inputType="textPersonName" />
 
     <Button
@@ -41,8 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inputDescription"
         android:textColor="?attr/textWhiteColor"
-        android:background="@color/blueOne"
+        android:background="@drawable/rounded_button"
         android:text="Add"
+        android:textStyle="bold"
+        android:textSize="10pt"
         android:paddingTop="12dp"/>
 
 </RelativeLayout>

@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import pens.lab.app.belajaractivity.R;
 
@@ -17,6 +18,7 @@ public abstract class BaseFragmentHolderActivity extends BaseActivity {
     protected ImageButton btOptionMenu;
     protected ImageView ivIcon;
     protected ImageButton btBack;
+    protected Toolbar toolbar;
     protected View vMenuBarShadow;
     protected RelativeLayout rlActivityFragmentHolder;
 
@@ -29,6 +31,7 @@ public abstract class BaseFragmentHolderActivity extends BaseActivity {
         ivIcon = (ImageView) findViewById(R.id.ivIcon);
         btBack = (ImageButton) findViewById(R.id.btBack);
         vMenuBarShadow = findViewById(R.id.vMenuBarShadow);
+        toolbar = findViewById(R.id.toolbar);
         rlActivityFragmentHolder = (RelativeLayout) findViewById(R.id.rlActivityFragmentHolder);
 
         btBack.setOnClickListener(new View.OnClickListener() {

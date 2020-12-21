@@ -13,6 +13,7 @@
     <attr name="imageTransparentOverlay" format="color" />
     <attr name="layoutColor" format="color" />
     <attr name="panelColor" format="color" />
+    <attr name="colorInputText" format="color"/>
 
     <!-- Declare custom theme attributes that allow changing which styles are
          used for button bars depending on the API level.

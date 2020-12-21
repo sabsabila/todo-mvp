@@ -2,13 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_login2">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/loginTitle"
@@ -16,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="Login Page"
             android:layout_marginTop="-100dp"
-            android:textColor="@color/darkblue"
+            android:textColor="@color/myLayoutColor"
             android:textSize="48sp"
             android:textStyle="bold" />
         <TextView
@@ -26,53 +28,39 @@
             android:text="To Do List App | Sabila Jamal"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="80dp"
-            android:textColor="@color/blueOne"
+            android:textColor="@color/myLayoutColor"
             android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/username_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Username"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/blueOne"
-            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
             android:inputType="textPersonName"
+            android:hint="Username"
+            android:textSize="8pt"
+            android:background="@drawable/rounded_edit_text"
             />
-        <TextView
-            android:id="@+id/password_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Password"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/blueOne"
-            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword" />
+            android:layout_height="50dp"
+            android:layout_marginBottom="50dp"
+            android:hint="Password"
+            android:textSize="8pt"
+            android:inputType="textPassword"
+            android:background="@drawable/rounded_edit_text"/>
 
         <Button
             android:id="@+id/bt_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="?attr/textWhiteColor"
-            android:background="@color/blueOne"
+            android:background="@drawable/rounded_button"
             android:text="@string/login"
+            android:textStyle="bold"
+            android:textSize="10pt"
             />
-
-
     </LinearLayout>
-
 </RelativeLayout>

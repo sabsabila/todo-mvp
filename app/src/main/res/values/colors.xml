@@ -31,5 +31,6 @@
     <color name="babyBlue">#9DA9F2</color>
     <color name="skyBlue">#5C65F0</color>
     <color name="lightBlue">#606AFC</color>
+    <color name="colorInputText">#F2F2F2</color>
 
 </resources>
