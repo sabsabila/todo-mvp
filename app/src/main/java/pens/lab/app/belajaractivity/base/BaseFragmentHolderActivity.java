@@ -45,6 +45,4 @@ public abstract class BaseFragmentHolderActivity extends BaseActivity {
     public void setTitle(String title) {
         this.tvToolbarTitle.setText(title);
     }
-
-
 }

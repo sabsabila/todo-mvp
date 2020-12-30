@@ -1,21 +1,36 @@
 package pens.lab.app.belajaractivity.modul.login;
 
-import pens.lab.app.belajaractivity.utils.UtilProvider;
+import pens.lab.app.belajaractivity.utils.RequestCallback;
 
 public class LoginPresenter implements LoginContract.Presenter{
     private final LoginContract.View view;
+    private final LoginContract.Interactor interactor;
 
-    public LoginPresenter(LoginContract.View view) {
+    public LoginPresenter(LoginContract.View view, LoginContract.Interactor interactor) {
         this.view = view;
+        this.interactor = interactor;
     }
 
     @Override
     public void start() {}
 
     @Override
-    public void performLogin(final String username, final String password){
-        UtilProvider.getSharedPreferencesUtil().setUsername(username);
-        view.redirectToList();
+    public void performLogin(final String email, final String password){
+        view.startLoading();
+       interactor.requestLogin(email, password, new RequestCallback<String>() {
+           @Override
+           public void requestSuccess(String data) {
+               interactor.saveToken(data);
+               view.redirectToList();
+               view.endLoading();
+           }
+
+           @Override
+           public void requestFailed(String errorMessage) {
+                view.showError(errorMessage);
+                view.endLoading();
+           }
+       });
     }
 
 }

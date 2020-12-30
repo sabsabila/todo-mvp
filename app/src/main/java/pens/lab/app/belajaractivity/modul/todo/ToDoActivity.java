@@ -3,6 +3,7 @@ package pens.lab.app.belajaractivity.modul.todo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -15,10 +16,10 @@ public class ToDoActivity extends BaseFragmentHolderActivity {
     protected void initializeFragment() {
         initializeView();
 
-        btBack.setVisibility(View.GONE);
+        //btBack.setVisibility(View.GONE);
         btOptionMenu.setVisibility(View.GONE);
 
-        ToDoFragment toDoFragment = new ToDoFragment();
+        ToDoFragment toDoFragment = new ToDoFragment(btBack);
         setCurrentFragment(toDoFragment, true);
 
     }

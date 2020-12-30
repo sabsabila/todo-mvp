@@ -7,18 +7,25 @@
     card_view:cardElevation="3dp"
     card_view:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:orientation="vertical"
         android:padding="5dp">
+
+        <CheckBox
+            android:id="@+id/cbTask"
+            android:gravity="top"
+            android:layout_alignParentTop="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
 
         <TextView
             android:id="@+id/tvTodolistTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/cbTask"
             android:layout_marginLeft="15dp"
             android:text="Title"
 
@@ -28,11 +35,12 @@
             android:id="@+id/tvTodolistDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/cbTask"
             android:layout_below="@+id/tvTodolistTitle"
             android:layout_marginLeft="15dp"
             android:text="Description"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

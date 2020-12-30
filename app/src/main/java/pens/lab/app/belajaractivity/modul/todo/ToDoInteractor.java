@@ -1,0 +1,104 @@
+package pens.lab.app.belajaractivity.modul.todo;
+
+import android.util.Log;
+
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
+
+import java.util.List;
+
+import pens.lab.app.belajaractivity.constant.ApiConstant;
+import pens.lab.app.belajaractivity.model.Task;
+import pens.lab.app.belajaractivity.model.User;
+import pens.lab.app.belajaractivity.response.ResponseMessage;
+import pens.lab.app.belajaractivity.response.ListTaskResponse;
+import pens.lab.app.belajaractivity.response.UserResponse;
+import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.utils.SharedPreferencesUtil;
+
+public class ToDoInteractor implements ToDoContract.Interactor{
+    private SharedPreferencesUtil sharedPreferencesUtil;
+
+    public ToDoInteractor(SharedPreferencesUtil sharedPreferencesUtil) {
+        this.sharedPreferencesUtil = sharedPreferencesUtil;
+    }
+
+    @Override
+    public void requestCheck(int id, String check,final RequestCallback<String> callback) {
+        AndroidNetworking.put(ApiConstant.BASE_URL + "task/check/" + id)
+                .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
+                .addBodyParameter("checked", check)
+                .build()
+                .getAsObject(ResponseMessage.class, new ParsedRequestListener<ResponseMessage>() {
+                    @Override
+                    public void onResponse(ResponseMessage response) {
+                        callback.requestSuccess(response.message);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        callback.requestFailed(error.getMessage());
+                        Log.d("tag", error.getMessage() + error.getErrorCode());
+                    }
+                });
+    }
+
+    @Override
+    public void requestTasks(int check, final RequestCallback<List<Task>> callback) {
+        AndroidNetworking.get(ApiConstant.BASE_URL + "task/check/" + check)
+                .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
+                .build()
+                .getAsObject(ListTaskResponse.class, new ParsedRequestListener<ListTaskResponse>() {
+                    @Override
+                    public void onResponse(ListTaskResponse response) {
+                        callback.requestSuccess(response.tasks);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        callback.requestFailed(error.getMessage());
+                        Log.d("tag", error.getMessage() + error.getErrorCode());
+                    }
+                });
+    }
+
+    @Override
+    public void requestUser(final RequestCallback<User> callback) {
+        AndroidNetworking.get(ApiConstant.BASE_URL + "user")
+                .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
+                .build()
+                .getAsObject(UserResponse.class, new ParsedRequestListener<UserResponse>() {
+                    @Override
+                    public void onResponse(UserResponse response) {
+                        callback.requestSuccess(response.user);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        callback.requestFailed(error.getMessage());
+                        Log.d("tag", error.getMessage() + error.getErrorCode());
+                    }
+                });
+    }
+
+    @Override
+    public void requestDelete(int id, final RequestCallback<String> callback) {
+        AndroidNetworking.delete(ApiConstant.BASE_URL + "task/" + id)
+                .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
+                .build()
+                .getAsObject(ResponseMessage.class, new ParsedRequestListener<ResponseMessage>() {
+                    @Override
+                    public void onResponse(ResponseMessage response) {
+                        callback.requestSuccess(response.message);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        callback.requestFailed(error.getMessage());
+                        Log.d("task", error.getMessage() + error.getErrorCode());
+                    }
+                });
+    }
+
+    @Override
+    public void logout() {
+        sharedPreferencesUtil.clear();
+    }
+}

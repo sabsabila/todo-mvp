@@ -1,19 +1,16 @@
 package pens.lab.app.belajaractivity.modul.todo;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,30 +19,37 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
 import pens.lab.app.belajaractivity.model.Task;
+import pens.lab.app.belajaractivity.model.User;
 import pens.lab.app.belajaractivity.modul.edit.EditActivity;
 import pens.lab.app.belajaractivity.modul.input.InputActivity;
-import pens.lab.app.belajaractivity.utils.Database;
-import pens.lab.app.belajaractivity.utils.RecyclerViewAdapterTodolist;
+import pens.lab.app.belajaractivity.modul.login.LoginActivity;
+import pens.lab.app.belajaractivity.adapter.ListTaskAdapter;
 import pens.lab.app.belajaractivity.utils.UtilProvider;
 
-public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View, RecyclerViewAdapterTodolist.MyClickListener , RecyclerViewAdapterTodolist.MyLongClickListener{
+public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View, ListTaskAdapter.MyClickListener , ListTaskAdapter.MyLongClickListener, ListTaskAdapter.MyOnCheckedListener{
 
     ImageButton addButton;
+    ImageButton btBack;
+    Button finishButton;
+    Button unfinishButton;
     TextView title;
-    RecyclerView mRecyclerView;
+    RecyclerView uncheckedRecyclerView;
+    RecyclerView checkedRecyclerView;
+    List<Task> uncheckedTasks;
+    List<Task> checkedTasks;
+    ListTaskAdapter uncheckedAdapter;
+    ListTaskAdapter checkedAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String username;
+    private RecyclerView.LayoutManager mLayoutManager2;
 
-    public ToDoFragment() {
-        this.username = UtilProvider.getSharedPreferencesUtil().getUsername();
+    public ToDoFragment(ImageButton btBack) {
+        this.btBack = btBack;
     }
 
     @Nullable
@@ -53,30 +57,67 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         fragmentView = inflater.inflate(R.layout.fragment_todolist, container, false);
-        mPresenter = new ToDoPresenter(this);
-        mPresenter.start();
-        addButton = fragmentView.findViewById(R.id.btnAdd);
-        title = fragmentView.findViewById(R.id.titleText);
-        title.setText("Hi, " + username);
+        initView();
+        setOnClickListener();
+        return fragmentView;
+    }
 
-        mRecyclerView = fragmentView.findViewById(R.id.recyclerViewTodolist);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(activity);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        setTitle("Todo List");
-
-        startLoading();
-        mPresenter.getTasks();
+    private void setOnClickListener() {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.inputItem();
             }
         });
-        setTitle("To Do List");
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLogoutAlert();
+            }
+        });
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Integer> id = new ArrayList<Integer>();
+                for(int i = 0; i < uncheckedTasks.size(); i++){
+                    if(uncheckedTasks.get(i).getChecked() == 1)
+                        id.add(uncheckedTasks.get(i).getTask_id());
+                }
+                mPresenter.checkTasks(id);
+            }
+        });
+        unfinishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ids = "";
+                for(int i = 0; i < checkedTasks.size(); i++){
+                    if(checkedTasks.get(i).getChecked() == 0)
+                        ids += " " + checkedTasks.get(i).getTask_id();
+                }
+                Toast.makeText(activity, ids, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-        return fragmentView;
+    private void initView() {
+        mPresenter = new ToDoPresenter(this, new ToDoInteractor(UtilProvider.getSharedPreferencesUtil()));
+        mPresenter.start();
+        addButton = fragmentView.findViewById(R.id.btnAdd);
+        finishButton = fragmentView.findViewById(R.id.finishBtn);
+        unfinishButton = fragmentView.findViewById(R.id.unfinishButton);
+        title = fragmentView.findViewById(R.id.titleText);
+        uncheckedRecyclerView = fragmentView.findViewById(R.id.recyclerViewTodolist);
+        uncheckedRecyclerView.setHasFixedSize(true);
+        checkedRecyclerView = fragmentView.findViewById(R.id.TodolistFinished);
+        checkedRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(activity);
+        mLayoutManager2 = new LinearLayoutManager(activity);
+        uncheckedRecyclerView.setLayoutManager(mLayoutManager);
+        checkedRecyclerView.setLayoutManager(mLayoutManager2);
+        startLoading();
+        mPresenter.getTasks();
+        mPresenter.getUser();
+        setTitle("To Do List");
     }
 
     @Override
@@ -100,7 +141,16 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
 
     @Override
     public void setTask(List<Task> task) {
-        mRecyclerView.setAdapter(new RecyclerViewAdapterTodolist(task, this, this));
+        this.uncheckedTasks = task;
+        uncheckedAdapter = new ListTaskAdapter(uncheckedTasks, this, this, this, "uncheck");
+        uncheckedRecyclerView.setAdapter(uncheckedAdapter);
+    }
+
+    @Override
+    public void setCheckedTask(List<Task> task) {
+        this.checkedTasks = task;
+        checkedAdapter = new ListTaskAdapter(checkedTasks, this, this, this, "check");
+        checkedRecyclerView.setAdapter(checkedAdapter);
     }
 
     @Override
@@ -115,13 +165,46 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
 
     @Override
     public void showError(String message) {
-        Toast.makeText(activity, message,Toast.LENGTH_SHORT);
+        Toast.makeText(activity, message,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void returnSuccess(String message) {
-        Toast.makeText(activity, message,Toast.LENGTH_SHORT);
+        Toast.makeText(activity, message,Toast.LENGTH_SHORT).show();
         startActivity(new Intent(activity, ToDoActivity.class));
+    }
+
+    @Override
+    public void checkSuccess() {
+        //Toast.makeText(activity, "Tasks updated successfully", Toast.LENGTH_SHORT).show();
+        startActivity(activity.getIntent());
+    }
+
+    @Override
+    public void setUser(User user) {
+        title.setText("Hi, " + user.getName());
+    }
+
+    @Override
+    public void showLogoutAlert(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setIcon(android.R.drawable.ic_delete);
+        builder.setTitle("Log Out");
+        builder.setMessage("Are you sure you want to log out ?");
+        builder.setPositiveButton(Html.fromHtml("<font color='#20a860'>Yes</font>"), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                mPresenter.logout();
+            }
+        });
+        builder.setNegativeButton(Html.fromHtml("<font color='#eb5334'>No</font>"), null);
+        builder.create();
+        builder.show();
+    }
+
+    @Override
+    public void logout() {
+        activity.finish();
+        startActivity(new Intent(activity, LoginActivity.class));
     }
 
     @Override
@@ -143,12 +226,36 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     }
 
     @Override
-    public void onItemClick(int position, View v) {
-        mPresenter.editList(position);
+    public void onItemClick(int position, View v, String tag) {
+        if(tag.equalsIgnoreCase("uncheck"))
+            mPresenter.editList(uncheckedTasks.get(position).getTask_id());
+        else
+            mPresenter.editList(checkedTasks.get(position).getTask_id());
     }
 
     @Override
-    public void onItemLongClick(int position, View v) {
-        showAlertDialog(position);
+    public void onItemLongClick(int position, View v, String tag) {
+        if(tag.equalsIgnoreCase("uncheck"))
+            showAlertDialog(uncheckedTasks.get(position).getTask_id());
+        else
+            showAlertDialog(checkedTasks.get(position).getTask_id());
+    }
+
+    @Override
+    public void onItemChecked(int idx, CompoundButton buttonView, boolean isChecked, String tag) {
+        Log.d("tag", tag );
+        if (isChecked){
+            if(tag.equalsIgnoreCase("uncheck"))
+                uncheckedTasks.get(idx).setChecked(1);
+            else
+                checkedTasks.get(idx).setChecked(0);
+            //Toast.makeText(activity, "checklist", Toast.LENGTH_SHORT).show();
+        } else {
+            if(tag.equalsIgnoreCase("uncheck"))
+                uncheckedTasks.get(idx).setChecked(0);
+            else
+                checkedTasks.get(idx).setChecked(1);
+            //Toast.makeText(activity, "unchecklist", Toast.LENGTH_SHORT).show();
+        }
     }
 }

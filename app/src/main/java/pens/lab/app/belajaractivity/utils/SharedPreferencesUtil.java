@@ -9,12 +9,12 @@ public class SharedPreferencesUtil {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public void setUsername(String username){
-        sharedPreferences.edit().putString("username", username).commit();
+    public void setToken(String token){
+        sharedPreferences.edit().putString("token", token).commit();
     }
 
-    public String getUsername(){
-        return sharedPreferences.getString("username", null);
+    public String getToken(){
+        return sharedPreferences.getString("token", null);
     }
 
     public void clear(){

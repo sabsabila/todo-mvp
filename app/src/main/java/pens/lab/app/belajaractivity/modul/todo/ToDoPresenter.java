@@ -1,20 +1,23 @@
 package pens.lab.app.belajaractivity.modul.todo;
 
-import android.util.Log;
+import java.util.List;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.ParsedRequestListener;
-
-import pens.lab.app.belajaractivity.constant.ApiConstant;
-import pens.lab.app.belajaractivity.response.DeleteTaskResponse;
-import pens.lab.app.belajaractivity.response.TaskResponse;
+import pens.lab.app.belajaractivity.model.Task;
+import pens.lab.app.belajaractivity.model.User;
+import pens.lab.app.belajaractivity.utils.RequestCallback;
 
 public class ToDoPresenter implements ToDoContract.Presenter{
     private final ToDoContract.View view;
+    private final ToDoContract.Interactor interactor;
+    private String message;
 
-    public ToDoPresenter(ToDoContract.View view) {
+    public ToDoPresenter(ToDoContract.View view, ToDoContract.Interactor interactor) {
         this.view = view;
+        this.interactor = interactor;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override
@@ -27,30 +30,33 @@ public class ToDoPresenter implements ToDoContract.Presenter{
 
     @Override
     public void getTasks() {
-        AndroidNetworking.get(ApiConstant.BASE_URL)
-                .build()
-                .getAsObject(TaskResponse.class, new ParsedRequestListener<TaskResponse>() {
-                    @Override
-                    public void onResponse(TaskResponse task) {
-                        if(task == null){
-                            view.showError("Null Response");
-                            Log.d("tag", "response null");
-                            view.endLoading();
-                        }
-                        else {
-                            view.setTask(task.data);
-                            view.endLoading();
-                            Log.d("tag", "bisa gan");
-                        }
-                    }
+        interactor.requestTasks(0, new RequestCallback<List<Task>>() {
+            @Override
+            public void requestSuccess(List<Task> data) {
+                view.setTask(data);
+                view.endLoading();
+            }
 
-                    @Override
-                    public void onError(ANError anError) {
-                        view.showError("Error loading task");
-                        Log.d("tag", "error gan" + anError.getMessage() + anError.getErrorCode());
-                        view.endLoading();
-                    }
-                });
+            @Override
+            public void requestFailed(String errorMessage) {
+                view.showError(errorMessage);
+                view.endLoading();
+            }
+        });
+
+        interactor.requestTasks(1, new RequestCallback<List<Task>>() {
+            @Override
+            public void requestSuccess(List<Task> data) {
+                view.setCheckedTask(data);
+                view.endLoading();
+            }
+
+            @Override
+            public void requestFailed(String errorMessage) {
+                view.showError(errorMessage);
+                view.endLoading();
+            }
+        });
     }
 
     public void editList(int id){
@@ -58,22 +64,64 @@ public class ToDoPresenter implements ToDoContract.Presenter{
     }
 
     public void deleteItem(int id){
-        AndroidNetworking.delete(ApiConstant.BASE_URL + "/" + id)
-                .build()
-                .getAsObject(DeleteTaskResponse.class, new ParsedRequestListener<DeleteTaskResponse>() {
-                    @Override
-                    public void onResponse(DeleteTaskResponse response) {
-                        Log.d("tag", response.status);
-                        view.returnSuccess(response.status);
-                        view.endLoading();
-                    }
-                    @Override
-                    public void onError(ANError error) {
-                        view.showError("Failed to delete data !");
-                        view.endLoading();
-                        Log.d("tag", error.getMessage() + error.getErrorCode());
-                    }
-                });
+        interactor.requestDelete(id, new RequestCallback<String>() {
+            @Override
+            public void requestSuccess(String data) {
+                view.returnSuccess(data);
+                view.endLoading();
+            }
+
+            @Override
+            public void requestFailed(String errorMessage) {
+                view.showError(errorMessage);
+                view.endLoading();
+            }
+        });
+    }
+
+    @Override
+    public void checkTasks(List<Integer> id) {
+        view.startLoading();
+        for(int i = 0; i < id.size(); i++){
+            interactor.requestCheck(id.get(i), "1", new RequestCallback<String>() {
+                @Override
+                public void requestSuccess(String data) {
+                    setMessage("success");
+                }
+
+                @Override
+                public void requestFailed(String errorMessage) {
+                    setMessage("error");
+                }
+            });
+        }
+        view.checkSuccess();
+    }
+
+    @Override
+    public void uncheckTask(List<Integer> id) {
+
+    }
+
+    @Override
+    public void getUser() {
+        interactor.requestUser(new RequestCallback<User>() {
+            @Override
+            public void requestSuccess(User data) {
+                view.setUser(data);
+            }
+
+            @Override
+            public void requestFailed(String errorMessage) {
+                view.showError(errorMessage);
+            }
+        });
+    }
+
+    @Override
+    public void logout() {
+        interactor.logout();
+        view.logout();
     }
 
 }

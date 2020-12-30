@@ -26,8 +26,8 @@
             android:id="@+id/loginTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login Page"
-            android:layout_marginTop="-80dp"
+            android:text="Register Page"
+            android:layout_marginTop="-50dp"
             android:textColor="@color/myLayoutColor"
             android:textSize="48sp"
             android:textStyle="bold" />
@@ -42,12 +42,22 @@
             android:textSize="16sp" />
 
         <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:hint="Name"
+            android:textSize="8pt"
+            android:inputType="text"
+            android:background="@drawable/rounded_edit_text"/>
+
+        <EditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:inputType="textPersonName"
-            android:hint="E - Mail"
+            android:hint="Email"
             android:textSize="8pt"
             android:background="@drawable/rounded_edit_text"
             />
@@ -68,19 +78,18 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/textWhiteColor"
             android:background="@drawable/rounded_button"
-            android:text="@string/login"
+            android:text="Register"
             android:textStyle="bold"
             android:textSize="10pt"
             />
-
         <Button
-            android:id="@+id/bt_register"
+            android:id="@+id/bt_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/textWhiteColor"
             android:layout_marginTop="20dp"
+            android:textColor="?attr/textWhiteColor"
             android:background="@drawable/rounded_button"
-            android:text="Register"
+            android:text="Back"
             android:textStyle="bold"
             android:textSize="10pt"
             />

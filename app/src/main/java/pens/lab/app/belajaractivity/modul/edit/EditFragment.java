@@ -11,16 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
 import pens.lab.app.belajaractivity.model.Task;
 import pens.lab.app.belajaractivity.modul.input.InputActivity;
-import pens.lab.app.belajaractivity.modul.input.InputContract;
-import pens.lab.app.belajaractivity.modul.input.InputPresenter;
 import pens.lab.app.belajaractivity.modul.todo.ToDoActivity;
-import pens.lab.app.belajaractivity.utils.Database;
+import pens.lab.app.belajaractivity.utils.UtilProvider;
 
 public class EditFragment extends BaseFragment<InputActivity, EditContract.Presenter> implements EditContract.View {
 
@@ -38,15 +34,12 @@ public class EditFragment extends BaseFragment<InputActivity, EditContract.Prese
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         fragmentView = inflater.inflate(R.layout.fragment_input, container, false);
-        mPresenter = new EditPresenter(this);
-        mPresenter.start();
+        initView();
+        setOnClickListener();
+        return fragmentView;
+    }
 
-        mPresenter.getTask(id);
-        inputButton = fragmentView.findViewById(R.id.btnInput);
-        inputButton.setText("Save");
-        newDataTitle = fragmentView.findViewById(R.id.inputTitle);
-        newDataDescription = fragmentView.findViewById(R.id.inputDescription);
-
+    private void setOnClickListener() {
         inputButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,10 +50,17 @@ public class EditFragment extends BaseFragment<InputActivity, EditContract.Prese
                 }
             }
         });
+    }
 
-        setTitle("Input New Item");
-
-        return fragmentView;
+    private void initView() {
+        mPresenter = new EditPresenter(this, new EditInteractor(UtilProvider.getSharedPreferencesUtil()));
+        mPresenter.start();
+        mPresenter.getTask(id);
+        inputButton = fragmentView.findViewById(R.id.btnInput);
+        inputButton.setText("Save");
+        newDataTitle = fragmentView.findViewById(R.id.inputTitle);
+        newDataDescription = fragmentView.findViewById(R.id.inputDescription);
+        setTitle("Edit Item");
     }
 
     @Override
@@ -75,7 +75,7 @@ public class EditFragment extends BaseFragment<InputActivity, EditContract.Prese
 
     @Override
     public void showError(String message) {
-        Toast.makeText(activity, message,Toast.LENGTH_SHORT);
+        Toast.makeText(activity, message,Toast.LENGTH_SHORT).show();
     }
 
     @Override

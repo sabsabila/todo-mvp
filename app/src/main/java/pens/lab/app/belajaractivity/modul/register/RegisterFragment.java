@@ -1,4 +1,4 @@
-package pens.lab.app.belajaractivity.modul.login;
+package pens.lab.app.belajaractivity.modul.register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,49 +13,53 @@ import androidx.annotation.Nullable;
 
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
-import pens.lab.app.belajaractivity.modul.register.RegisterActivity;
+import pens.lab.app.belajaractivity.model.User;
+import pens.lab.app.belajaractivity.modul.login.LoginActivity;
 import pens.lab.app.belajaractivity.modul.todo.ToDoActivity;
 import pens.lab.app.belajaractivity.utils.UtilProvider;
 
-public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Presenter> implements LoginContract.View {
+public class RegisterFragment extends BaseFragment<RegisterActivity, RegisterContract.Presenter> implements RegisterContract.View {
 
+    EditText etName;
     EditText etEmail;
     EditText etPassword;
-    Button btnLogin;
     Button btnRegister;
+    Button btnBack;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        fragmentView = inflater.inflate(R.layout.fragment_login, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_register, container, false);
         initView();
         setOnClickListener();
         return fragmentView;
     }
 
     private void setOnClickListener() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setBtLoginClick();
-            }
-        });
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View view) {
+                setBtRegisterClick();
+            }
+        });
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                startActivity(new Intent(activity, RegisterActivity.class));
+                activity.finish();
+                startActivity(new Intent(activity, LoginActivity.class));
             }
         });
     }
 
     private void initView(){
-        mPresenter = new LoginPresenter(this, new LoginInteractor(UtilProvider.getSharedPreferencesUtil()));
+        mPresenter = new RegisterPresenter(this, new RegisterInteractor(UtilProvider.getSharedPreferencesUtil()));
         mPresenter.start();
+        etName = fragmentView.findViewById(R.id.et_name);
         etEmail = fragmentView.findViewById(R.id.et_email);
         etPassword = fragmentView.findViewById(R.id.et_password);
-        btnLogin = fragmentView.findViewById(R.id.bt_login);
-        btnRegister = fragmentView.findViewById(R.id.bt_register);
+        btnRegister = fragmentView.findViewById(R.id.bt_login);
+        btnBack = fragmentView.findViewById(R.id.bt_back);
     }
 
     @Override
@@ -68,26 +72,30 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
         fragmentView.findViewById(R.id.progress_bar).setVisibility(View.GONE);
     }
 
-    public void setBtLoginClick(){
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        mPresenter.performLogin(email,password);
+    public void setBtRegisterClick(){
+        User user = new User(etName.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString());
+        mPresenter.performRegister(user);
     }
 
     @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
+    public void setPresenter(RegisterContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
     @Override
-    public void redirectToList() {
-            Intent intent = new Intent(activity, ToDoActivity.class);
-            startActivity(intent);
-            activity.finish();
+    public void redirectToLogin() {
+        activity.finish();
+        startActivity(new Intent(activity, LoginActivity.class));
     }
 
     @Override
     public void showError(String message) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void returnSuccess(String message) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+        redirectToLogin();
     }
 }
