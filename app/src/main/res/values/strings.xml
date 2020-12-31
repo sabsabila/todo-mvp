@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">To Do List</string>
     <string name="login">Login</string>
+    <string name="server_client_id">808673283454-6ja9jnapj34sikb8jauud8qntqupa70f.apps.googleusercontent.com</string>
 </resources>
