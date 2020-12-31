@@ -82,25 +82,35 @@ public class ToDoPresenter implements ToDoContract.Presenter{
     @Override
     public void checkTasks(List<Integer> id) {
         view.startLoading();
-        for(int i = 0; i < id.size(); i++){
-            interactor.requestCheck(id.get(i), "1", new RequestCallback<String>() {
-                @Override
-                public void requestSuccess(String data) {
-                    setMessage("success");
-                }
-
-                @Override
-                public void requestFailed(String errorMessage) {
-                    setMessage("error");
-                }
-            });
-        }
-        view.checkSuccess();
+        interactor.requestCheck(id, "1", new RequestCallback<String>() {
+            @Override
+            public void requestSuccess(String data) {
+                setMessage("success");
+                view.checkSuccess();
+            }
+            @Override
+            public void requestFailed(String errorMessage) {
+                setMessage("error");
+                view.showError(errorMessage);
+            }
+        });
     }
 
     @Override
-    public void uncheckTask(List<Integer> id) {
-
+    public void uncheckTasks(List<Integer> id) {
+        view.startLoading();
+        interactor.requestCheck(id, "0", new RequestCallback<String>() {
+            @Override
+            public void requestSuccess(String data) {
+                setMessage("success");
+                view.checkSuccess();
+            }
+            @Override
+            public void requestFailed(String errorMessage) {
+                setMessage("error");
+                view.showError(errorMessage);
+            }
+        });
     }
 
     @Override

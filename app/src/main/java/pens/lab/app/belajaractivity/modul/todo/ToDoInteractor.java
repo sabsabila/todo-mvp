@@ -6,6 +6,10 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import pens.lab.app.belajaractivity.constant.ApiConstant;
@@ -25,10 +29,11 @@ public class ToDoInteractor implements ToDoContract.Interactor{
     }
 
     @Override
-    public void requestCheck(int id, String check,final RequestCallback<String> callback) {
-        AndroidNetworking.put(ApiConstant.BASE_URL + "task/check/" + id)
+    public void requestCheck(List<Integer> id, String check,final RequestCallback<String> callback) {
+        JSONObject idObject = getJson(id);
+        AndroidNetworking.put(ApiConstant.BASE_URL + "task/check/" + check)
                 .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
-                .addBodyParameter("checked", check)
+                .addJSONObjectBody(idObject)
                 .build()
                 .getAsObject(ResponseMessage.class, new ParsedRequestListener<ResponseMessage>() {
                     @Override
@@ -41,6 +46,21 @@ public class ToDoInteractor implements ToDoContract.Interactor{
                         Log.d("tag", error.getMessage() + error.getErrorCode());
                     }
                 });
+    }
+
+    private JSONObject getJson(List<Integer> id) {
+        JSONArray jsonArray = new JSONArray();
+        for(int i = 0; i < id.size(); i++){
+            jsonArray.put(id.get(i));
+        }
+        JSONObject idObj = new JSONObject();
+        try {
+            idObj.put("id", jsonArray);
+            return idObj;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return idObj;
     }
 
     @Override

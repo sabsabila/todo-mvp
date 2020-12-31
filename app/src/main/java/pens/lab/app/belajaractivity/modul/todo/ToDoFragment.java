@@ -32,7 +32,7 @@ import pens.lab.app.belajaractivity.modul.login.LoginActivity;
 import pens.lab.app.belajaractivity.adapter.ListTaskAdapter;
 import pens.lab.app.belajaractivity.utils.UtilProvider;
 
-public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View, ListTaskAdapter.MyClickListener , ListTaskAdapter.MyLongClickListener, ListTaskAdapter.MyOnCheckedListener{
+public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View, ListTaskAdapter.MyClickListener, ListTaskAdapter.MyOnCheckedListener{
 
     ImageButton addButton;
     ImageButton btBack;
@@ -89,12 +89,12 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         unfinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ids = "";
+                List<Integer> id = new ArrayList<Integer>();
                 for(int i = 0; i < checkedTasks.size(); i++){
                     if(checkedTasks.get(i).getChecked() == 0)
-                        ids += " " + checkedTasks.get(i).getTask_id();
+                        id.add(checkedTasks.get(i).getTask_id());
                 }
-                Toast.makeText(activity, ids, Toast.LENGTH_SHORT).show();
+                mPresenter.uncheckTasks(id);
             }
         });
     }
@@ -142,14 +142,14 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     @Override
     public void setTask(List<Task> task) {
         this.uncheckedTasks = task;
-        uncheckedAdapter = new ListTaskAdapter(uncheckedTasks, this, this, this, "uncheck");
+        uncheckedAdapter = new ListTaskAdapter(uncheckedTasks, this, this, "uncheck");
         uncheckedRecyclerView.setAdapter(uncheckedAdapter);
     }
 
     @Override
     public void setCheckedTask(List<Task> task) {
         this.checkedTasks = task;
-        checkedAdapter = new ListTaskAdapter(checkedTasks, this, this, this, "check");
+        checkedAdapter = new ListTaskAdapter(checkedTasks, this, this, "check");
         checkedRecyclerView.setAdapter(checkedAdapter);
     }
 
@@ -226,7 +226,7 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     }
 
     @Override
-    public void onItemClick(int position, View v, String tag) {
+    public void onEditClick(int position, View v, String tag) {
         if(tag.equalsIgnoreCase("uncheck"))
             mPresenter.editList(uncheckedTasks.get(position).getTask_id());
         else
@@ -234,11 +234,28 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     }
 
     @Override
-    public void onItemLongClick(int position, View v, String tag) {
+    public void onDeleteClick(int position, View v, String tag) {
         if(tag.equalsIgnoreCase("uncheck"))
             showAlertDialog(uncheckedTasks.get(position).getTask_id());
         else
             showAlertDialog(checkedTasks.get(position).getTask_id());
+    }
+
+    @Override
+    public void onShareClick(int position, View v, String tag) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+
+        String text;
+        if(tag.equalsIgnoreCase("uncheck"))
+            text = uncheckedTasks.get(position).getTitle() + " - " + uncheckedTasks.get(position).getDescription();
+        else
+            text = checkedTasks.get(position).getTitle() + " - " + checkedTasks.get(position).getDescription();
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     @Override

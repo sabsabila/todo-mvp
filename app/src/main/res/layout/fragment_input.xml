@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inputDescription"
         android:textColor="?attr/textWhiteColor"
-        android:background="@drawable/rounded_button"
+        android:background="@drawable/rounded_button_dark"
         android:text="Add"
         android:textStyle="bold"
         android:textSize="10pt"

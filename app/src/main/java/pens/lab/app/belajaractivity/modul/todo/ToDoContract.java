@@ -31,13 +31,13 @@ public interface ToDoContract {
         void editList(final int index);
         void deleteItem(final int position);
         void checkTasks(List<Integer> id);
-        void uncheckTask(List<Integer> id);
+        void uncheckTasks(List<Integer> id);
         void getUser();
         void logout();
     }
 
     interface Interactor{
-        void requestCheck(int id, String check, RequestCallback<String> callback);
+        void requestCheck(List<Integer> id, String check, RequestCallback<String> callback);
         void requestTasks(int check, RequestCallback<List<Task>> callback);
         void requestUser(RequestCallback<User> callback);
         void requestDelete(int id, RequestCallback<String> callback);

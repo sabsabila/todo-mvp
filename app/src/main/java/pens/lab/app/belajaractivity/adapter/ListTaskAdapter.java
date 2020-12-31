@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,35 +18,37 @@ import pens.lab.app.belajaractivity.model.Task;
 public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyViewHolder> {
     private static List<Task> mDataset;
     private static ListTaskAdapter.MyClickListener myClickListener;
-    private static ListTaskAdapter.MyLongClickListener myLongClickListener;
     private static ListTaskAdapter.MyOnCheckedListener myOnCheckedListener;
     private final String tag;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         TextView tvTitle;
         TextView tvDescription;
         CheckBox cbTask;
+        ImageButton editBtn, deleteBtn, shareBtn;
         public MyViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
             cbTask = (CheckBox) itemView.findViewById(R.id.cbTask);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+            editBtn = (ImageButton) itemView.findViewById(R.id.edit_btn);
+            deleteBtn = (ImageButton) itemView.findViewById(R.id.delete_btn);
+            shareBtn = (ImageButton) itemView.findViewById(R.id.share_btn);
             cbTask.setOnCheckedChangeListener(this);
+            editBtn.setOnClickListener(this);
+            deleteBtn.setOnClickListener(this);
+            shareBtn.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            myClickListener.onItemClick(position, view, tag);
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            int position =  getAdapterPosition();
-            myLongClickListener.onItemLongClick(position, view, tag);
-            return true;
+            if(view.getId() == editBtn.getId())
+                myClickListener.onEditClick(position, view, tag);
+            if(view.getId() == deleteBtn.getId())
+                myClickListener.onDeleteClick(position, view, tag);
+            if(view.getId() == shareBtn.getId())
+                myClickListener.onShareClick(position, view, tag);
         }
 
         @Override
@@ -56,11 +59,9 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
     }
 
     public ListTaskAdapter(List<Task> myDataset, ListTaskAdapter.MyClickListener onClickListener,
-                           ListTaskAdapter.MyLongClickListener longClickListener,
                            ListTaskAdapter.MyOnCheckedListener checkedListener, String tag) {
         mDataset = myDataset;
         myClickListener = onClickListener;
-        myLongClickListener = longClickListener;
         myOnCheckedListener = checkedListener;
         this.tag = tag;
     }
@@ -86,17 +87,15 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
     public void setOnItemClickListener(ListTaskAdapter.MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
-    public void setOnItemLongClickListener(ListTaskAdapter.MyLongClickListener myLongClickListener) {
-        this.myLongClickListener = myLongClickListener;
-    }
+
     public void setOnCheckedChangeListener(ListTaskAdapter.MyOnCheckedListener myCheckChangedListener) {
         this.myOnCheckedListener = myCheckChangedListener;
     }
+
     public interface MyClickListener {
-        void onItemClick(int position, View v, String tag);
-    }
-    public interface MyLongClickListener {
-        void onItemLongClick(int position, View v, String tag);
+        void onEditClick(int position, View v, String tag);
+        void onDeleteClick(int position, View v, String tag);
+        void onShareClick(int position, View v, String tag);
     }
 
     public interface MyOnCheckedListener{
