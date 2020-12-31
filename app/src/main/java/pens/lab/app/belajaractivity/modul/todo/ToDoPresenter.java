@@ -4,20 +4,15 @@ import java.util.List;
 
 import pens.lab.app.belajaractivity.model.Task;
 import pens.lab.app.belajaractivity.model.User;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 
 public class ToDoPresenter implements ToDoContract.Presenter{
     private final ToDoContract.View view;
     private final ToDoContract.Interactor interactor;
-    private String message;
 
     public ToDoPresenter(ToDoContract.View view, ToDoContract.Interactor interactor) {
         this.view = view;
         this.interactor = interactor;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @Override
@@ -30,6 +25,7 @@ public class ToDoPresenter implements ToDoContract.Presenter{
 
     @Override
     public void getTasks() {
+        view.startLoading();
         interactor.requestTasks(0, new RequestCallback<List<Task>>() {
             @Override
             public void requestSuccess(List<Task> data) {
@@ -64,6 +60,7 @@ public class ToDoPresenter implements ToDoContract.Presenter{
     }
 
     public void deleteItem(int id){
+        view.startLoading();
         interactor.requestDelete(id, new RequestCallback<String>() {
             @Override
             public void requestSuccess(String data) {
@@ -85,12 +82,10 @@ public class ToDoPresenter implements ToDoContract.Presenter{
         interactor.requestCheck(id, "1", new RequestCallback<String>() {
             @Override
             public void requestSuccess(String data) {
-                setMessage("success");
                 view.checkSuccess();
             }
             @Override
             public void requestFailed(String errorMessage) {
-                setMessage("error");
                 view.showError(errorMessage);
             }
         });
@@ -102,12 +97,10 @@ public class ToDoPresenter implements ToDoContract.Presenter{
         interactor.requestCheck(id, "0", new RequestCallback<String>() {
             @Override
             public void requestSuccess(String data) {
-                setMessage("success");
                 view.checkSuccess();
             }
             @Override
             public void requestFailed(String errorMessage) {
-                setMessage("error");
                 view.showError(errorMessage);
             }
         });
@@ -115,6 +108,7 @@ public class ToDoPresenter implements ToDoContract.Presenter{
 
     @Override
     public void getUser() {
+        view.startLoading();
         interactor.requestUser(new RequestCallback<User>() {
             @Override
             public void requestSuccess(User data) {

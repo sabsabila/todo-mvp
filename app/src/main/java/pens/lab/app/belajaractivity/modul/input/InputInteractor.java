@@ -1,15 +1,14 @@
 package pens.lab.app.belajaractivity.modul.input;
 
-import android.util.Log;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 
 import pens.lab.app.belajaractivity.constant.ApiConstant;
 import pens.lab.app.belajaractivity.model.Task;
-import pens.lab.app.belajaractivity.response.ResponseMessage;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.api_response.ErrorResponse;
+import pens.lab.app.belajaractivity.api_response.ResponseMessage;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 import pens.lab.app.belajaractivity.utils.SharedPreferencesUtil;
 
 public class InputInteractor implements InputContract.Interactor{
@@ -33,8 +32,7 @@ public class InputInteractor implements InputContract.Interactor{
                     }
                     @Override
                     public void onError(ANError error) {
-                        callback.requestFailed(error.getMessage());
-                        Log.d("tag", error.getMessage() + error.getErrorCode());
+                        callback.requestFailed(ErrorResponse.requestFailed);
                     }
                 });
     }

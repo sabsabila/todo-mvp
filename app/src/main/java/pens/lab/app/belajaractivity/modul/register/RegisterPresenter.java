@@ -1,7 +1,7 @@
 package pens.lab.app.belajaractivity.modul.register;
 
 import pens.lab.app.belajaractivity.model.User;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 
 public class RegisterPresenter implements RegisterContract.Presenter{
     private final RegisterContract.View view;

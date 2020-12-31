@@ -45,7 +45,6 @@ public class EditFragment extends BaseFragment<InputActivity, EditContract.Prese
             public void onClick(View view) {
                 if(newDataTitle.getText() != null && newDataDescription.getText() != null){
                     Task newTask = new Task(newDataTitle.getText().toString(), newDataDescription.getText().toString());
-                    startLoading();
                     mPresenter.performEdit(id, newTask);
                 }
             }

@@ -1,16 +1,14 @@
 package pens.lab.app.belajaractivity.modul.register;
 
-import android.util.Log;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 
 import pens.lab.app.belajaractivity.constant.ApiConstant;
 import pens.lab.app.belajaractivity.model.User;
-import pens.lab.app.belajaractivity.response.LoginResponse;
-import pens.lab.app.belajaractivity.response.ResponseMessage;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.api_response.ErrorResponse;
+import pens.lab.app.belajaractivity.api_response.ResponseMessage;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 import pens.lab.app.belajaractivity.utils.SharedPreferencesUtil;
 
 public class RegisterInteractor implements RegisterContract.Interactor{
@@ -34,8 +32,10 @@ public class RegisterInteractor implements RegisterContract.Interactor{
                     }
                     @Override
                     public void onError(ANError error) {
-                        callback.requestFailed(error.getMessage());
-                        Log.d("tag", error.getMessage() + error.getErrorCode());
+                        if(error.getErrorCode() == 401)
+                            callback.requestFailed(ErrorResponse.unauthorized);
+                        else
+                            callback.requestFailed(ErrorResponse.requestFailed);
                     }
                 });
     }

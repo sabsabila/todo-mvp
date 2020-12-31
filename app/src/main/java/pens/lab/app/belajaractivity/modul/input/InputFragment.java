@@ -39,7 +39,6 @@ public class InputFragment extends BaseFragment<InputActivity, InputContract.Pre
             public void onClick(View view) {
                 if(newDataTitle.getText() != null && newDataDescription.getText() != null){
                     Task newTask = new Task(newDataTitle.getText().toString(), newDataDescription.getText().toString());
-                    startLoading();
                     mPresenter.performAdd(newTask);
                 }
             }

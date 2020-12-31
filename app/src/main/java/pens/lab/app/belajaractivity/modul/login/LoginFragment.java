@@ -11,6 +11,13 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+
 import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragment;
 import pens.lab.app.belajaractivity.modul.register.RegisterActivity;
@@ -23,6 +30,8 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
     EditText etPassword;
     Button btnLogin;
     Button btnRegister;
+    Button googleBtn;
+    GoogleSignInClient mGoogleSignInClient;
 
     @Nullable
     @Override
@@ -31,7 +40,18 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
         fragmentView = inflater.inflate(R.layout.fragment_login, container, false);
         initView();
         setOnClickListener();
+        initGSO();
         return fragmentView;
+    }
+
+    private void initGSO(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(activity);
+        if(account != null)
+            mGoogleSignInClient.signOut();
     }
 
     private void setOnClickListener() {
@@ -47,6 +67,36 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
                 startActivity(new Intent(activity, RegisterActivity.class));
             }
         });
+        googleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                googleSignIn();
+            }
+        });
+    }
+
+    private void googleSignIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            mPresenter.performGoogleLogin(account.getEmail(), account.getDisplayName());
+        } catch (ApiException e) {
+            Toast.makeText(activity, "Failed to sign in with google", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initView(){
@@ -56,6 +106,7 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
         etPassword = fragmentView.findViewById(R.id.et_password);
         btnLogin = fragmentView.findViewById(R.id.bt_login);
         btnRegister = fragmentView.findViewById(R.id.bt_register);
+        googleBtn = fragmentView.findViewById(R.id.google_button);
     }
 
     @Override

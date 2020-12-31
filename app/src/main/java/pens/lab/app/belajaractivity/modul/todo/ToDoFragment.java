@@ -83,7 +83,10 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
                     if(uncheckedTasks.get(i).getChecked() == 1)
                         id.add(uncheckedTasks.get(i).getTask_id());
                 }
-                mPresenter.checkTasks(id);
+                if(id.size() > 0)
+                    mPresenter.checkTasks(id);
+                else
+                    Toast.makeText(activity, "None is selected.", Toast.LENGTH_SHORT).show();
             }
         });
         unfinishButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +97,10 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
                     if(checkedTasks.get(i).getChecked() == 0)
                         id.add(checkedTasks.get(i).getTask_id());
                 }
-                mPresenter.uncheckTasks(id);
+                if(id.size() > 0)
+                    mPresenter.uncheckTasks(id);
+                else
+                    Toast.makeText(activity, "None is selected.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -176,7 +182,7 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
 
     @Override
     public void checkSuccess() {
-        //Toast.makeText(activity, "Tasks updated successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, "Tasks updated successfully", Toast.LENGTH_SHORT).show();
         startActivity(activity.getIntent());
     }
 

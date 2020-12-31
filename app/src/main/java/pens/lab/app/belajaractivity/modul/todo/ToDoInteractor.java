@@ -15,10 +15,11 @@ import java.util.List;
 import pens.lab.app.belajaractivity.constant.ApiConstant;
 import pens.lab.app.belajaractivity.model.Task;
 import pens.lab.app.belajaractivity.model.User;
-import pens.lab.app.belajaractivity.response.ResponseMessage;
-import pens.lab.app.belajaractivity.response.ListTaskResponse;
-import pens.lab.app.belajaractivity.response.UserResponse;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.api_response.ErrorResponse;
+import pens.lab.app.belajaractivity.api_response.ResponseMessage;
+import pens.lab.app.belajaractivity.api_response.ListTaskResponse;
+import pens.lab.app.belajaractivity.api_response.UserResponse;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 import pens.lab.app.belajaractivity.utils.SharedPreferencesUtil;
 
 public class ToDoInteractor implements ToDoContract.Interactor{
@@ -42,8 +43,7 @@ public class ToDoInteractor implements ToDoContract.Interactor{
                     }
                     @Override
                     public void onError(ANError error) {
-                        callback.requestFailed(error.getMessage());
-                        Log.d("tag", error.getMessage() + error.getErrorCode());
+                        callback.requestFailed(ErrorResponse.requestFailed);
                     }
                 });
     }
@@ -75,7 +75,7 @@ public class ToDoInteractor implements ToDoContract.Interactor{
                     }
                     @Override
                     public void onError(ANError error) {
-                        callback.requestFailed(error.getMessage());
+                        callback.requestFailed(ErrorResponse.requestFailed);
                         Log.d("tag", error.getMessage() + error.getErrorCode());
                     }
                 });
@@ -93,7 +93,7 @@ public class ToDoInteractor implements ToDoContract.Interactor{
                     }
                     @Override
                     public void onError(ANError error) {
-                        callback.requestFailed(error.getMessage());
+                        callback.requestFailed(ErrorResponse.requestFailed);
                         Log.d("tag", error.getMessage() + error.getErrorCode());
                     }
                 });
@@ -111,8 +111,7 @@ public class ToDoInteractor implements ToDoContract.Interactor{
                     }
                     @Override
                     public void onError(ANError error) {
-                        callback.requestFailed(error.getMessage());
-                        Log.d("task", error.getMessage() + error.getErrorCode());
+                        callback.requestFailed(ErrorResponse.requestFailed);
                     }
                 });
     }

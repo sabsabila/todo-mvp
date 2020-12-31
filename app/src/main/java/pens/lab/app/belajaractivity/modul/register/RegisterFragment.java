@@ -73,8 +73,12 @@ public class RegisterFragment extends BaseFragment<RegisterActivity, RegisterCon
     }
 
     public void setBtRegisterClick(){
-        User user = new User(etName.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString());
-        mPresenter.performRegister(user);
+        User user;
+        if(etName.getText() != null && etPassword.getText() != null && etEmail.getText() != null){
+            user = new User(etName.getText().toString(), etEmail.getText().toString(), etPassword.getText().toString());
+            mPresenter.performRegister(user);
+        }else
+            Toast.makeText(activity, "All fields must be filled", Toast.LENGTH_SHORT).show();
     }
 
     @Override

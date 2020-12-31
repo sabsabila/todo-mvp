@@ -1,4 +1,4 @@
-package pens.lab.app.belajaractivity.utils;
+package pens.lab.app.belajaractivity.callback;
 
 public interface RequestCallback<T> {
     void requestSuccess(T data);

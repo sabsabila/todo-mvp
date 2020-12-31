@@ -1,6 +1,6 @@
 package pens.lab.app.belajaractivity.modul.input;
 import pens.lab.app.belajaractivity.model.Task;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 
 public class InputPresenter implements InputContract.Presenter{
 
@@ -17,6 +17,7 @@ public class InputPresenter implements InputContract.Presenter{
 
     @Override
     public void performAdd(Task task){
+        view.startLoading();
         interactor.requestAddTask(task, new RequestCallback<String>() {
             @Override
             public void requestSuccess(String data) {

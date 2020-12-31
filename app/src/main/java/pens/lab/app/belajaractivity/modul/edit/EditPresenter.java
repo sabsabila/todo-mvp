@@ -1,7 +1,7 @@
 package pens.lab.app.belajaractivity.modul.edit;
 
 import pens.lab.app.belajaractivity.model.Task;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 
 public class EditPresenter implements EditContract.Presenter{
 
@@ -18,6 +18,7 @@ public class EditPresenter implements EditContract.Presenter{
 
     @Override
     public void performEdit(int id, Task task){
+        view.startLoading();
         interactor.requestEdit(id, task, new RequestCallback<String>() {
             @Override
             public void requestSuccess(String data) {

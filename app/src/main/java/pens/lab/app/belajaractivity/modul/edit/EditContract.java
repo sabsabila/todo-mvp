@@ -3,7 +3,7 @@ package pens.lab.app.belajaractivity.modul.edit;
 import pens.lab.app.belajaractivity.base.BasePresenter;
 import pens.lab.app.belajaractivity.base.BaseView;
 import pens.lab.app.belajaractivity.model.Task;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 
 public interface EditContract {
     interface View extends BaseView<Presenter> {

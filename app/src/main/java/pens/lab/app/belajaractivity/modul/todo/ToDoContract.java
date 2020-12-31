@@ -6,7 +6,7 @@ import pens.lab.app.belajaractivity.base.BasePresenter;
 import pens.lab.app.belajaractivity.base.BaseView;
 import pens.lab.app.belajaractivity.model.Task;
 import pens.lab.app.belajaractivity.model.User;
-import pens.lab.app.belajaractivity.utils.RequestCallback;
+import pens.lab.app.belajaractivity.callback.RequestCallback;
 
 public interface ToDoContract {
     interface View extends BaseView<Presenter> {

@@ -22,6 +22,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="20dp"
+        android:drawableStart="@drawable/pencil_icon"
         android:background="@drawable/rounded_edit_text"
         android:hint="Title"
         android:inputType="textPersonName" />
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:minHeight="50dp"
         android:layout_below="@+id/inputTitle"
+        android:drawableStart="@drawable/book_icon"
         android:background="@drawable/rounded_edit_text"
         android:layout_marginBottom="50dp"
         android:hint="Description"

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login Page"
-            android:layout_marginTop="-80dp"
+            android:layout_marginTop="-50dp"
             android:textColor="@color/myLayoutColor"
             android:textSize="48sp"
             android:textStyle="bold" />
@@ -45,6 +45,7 @@
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:drawableStart="@drawable/email_icon"
             android:layout_marginBottom="20dp"
             android:inputType="textPersonName"
             android:hint="E - Mail"
@@ -57,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="50dp"
+            android:drawableStart="@drawable/key_icon"
             android:hint="Password"
             android:textSize="8pt"
             android:inputType="textPassword"
@@ -70,8 +72,7 @@
             android:background="@drawable/rounded_button"
             android:text="@string/login"
             android:textStyle="bold"
-            android:textSize="10pt"
-            />
+            android:textSize="10pt"/>
 
         <Button
             android:id="@+id/bt_register"
@@ -82,7 +83,16 @@
             android:background="@drawable/rounded_button"
             android:text="Register"
             android:textStyle="bold"
-            android:textSize="10pt"
-            />
+            android:textSize="10pt"/>
+
+        <Button
+            android:id="@+id/google_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign in With Google"
+            android:textColor="@color/navyBlue"
+            android:drawableStart="@drawable/google_icon"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/google_button"/>
     </LinearLayout>
 </RelativeLayout>
