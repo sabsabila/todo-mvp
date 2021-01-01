@@ -1,71 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    card_view:cardCornerRadius="6dp"
-    card_view:cardElevation="3dp"
-    card_view:cardUseCompatPadding="true">
+    android:layout_height="80dp"
+    android:id="@+id/swipeLayout">
+    <!-- Bottom View Start-->
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/darkblue"
+        card_view:cardCornerRadius="6dp"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true">
 
-    <RelativeLayout
+        <ImageView
+            android:background="@color/darkblue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
+
+        <RelativeLayout
+            android:id="@+id/bottom_wrapper"
+            android:layout_width="match_parent"
+            android:weightSum="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_gravity="end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:text="Select an action : "
+                android:layout_marginTop="10dp"
+                android:textSize="8pt"
+                android:textColor="@color/myTextLight"/>
+
+            <ImageButton
+                android:id="@+id/edit_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toStartOf="@+id/delete_btn"
+                android:background="@drawable/edit_white"/>
+
+            <ImageButton
+                android:id="@+id/delete_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toStartOf="@+id/share_btn"
+                android:background="@drawable/trash_white"/>
+
+            <ImageButton
+                android:id="@+id/share_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/share_white"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+    <!-- Bottom View End-->
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/topView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="5dp">
+        card_view:cardCornerRadius="6dp"
+        card_view:cardElevation="3dp"
+        card_view:cardUseCompatPadding="true">
 
-        <CheckBox
-            android:id="@+id/cbTask"
-            android:gravity="top"
-            android:layout_alignParentTop="true"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-
-        <TextView
-            android:id="@+id/tvTodolistTitle"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/cbTask"
-            android:layout_marginLeft="15dp"
-            android:text="Title"
-            android:textStyle="bold" />
+            android:layout_margin="5dp"
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tvTodolistDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/cbTask"
-            android:layout_below="@+id/tvTodolistTitle"
-            android:layout_marginLeft="15dp"
-            android:text="Description"/>
+            <CheckBox
+                android:id="@+id/cbTask"
+                android:gravity="top"
+                android:layout_alignParentTop="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
 
-        <ImageButton
-            android:id="@+id/edit_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toStartOf="@+id/delete_btn"
-            android:background="@drawable/edit"/>
+            <TextView
+                android:id="@+id/tvTodolistTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/cbTask"
+                android:layout_marginLeft="15dp"
+                android:text="Title"
+                android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/delete_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toStartOf="@+id/share_btn"
-            android:background="@drawable/delete"/>
+            <TextView
+                android:id="@+id/tvTodolistDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/cbTask"
+                android:layout_below="@+id/tvTodolistTitle"
+                android:layout_marginLeft="15dp"
+                android:text="Description"/>
 
-        <ImageButton
-            android:id="@+id/share_btn"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/share"/>
-
-    </RelativeLayout>
-
-</androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</com.daimajia.swipe.SwipeLayout>

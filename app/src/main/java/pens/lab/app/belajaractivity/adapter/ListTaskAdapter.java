@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daimajia.swipe.SwipeLayout;
+
 import java.util.List;
 
 import pens.lab.app.belajaractivity.R;
@@ -21,25 +23,35 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
     private static ListTaskAdapter.MyOnCheckedListener myOnCheckedListener;
     private final String tag;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
         TextView tvTitle;
         TextView tvDescription;
         CheckBox cbTask;
         ImageButton editBtn, deleteBtn, shareBtn;
+        SwipeLayout swipeLayout;
         public MyViewHolder(View itemView) {
             super(itemView);
-            tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
-            tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
-            cbTask = (CheckBox) itemView.findViewById(R.id.cbTask);
-            editBtn = (ImageButton) itemView.findViewById(R.id.edit_btn);
-            deleteBtn = (ImageButton) itemView.findViewById(R.id.delete_btn);
-            shareBtn = (ImageButton) itemView.findViewById(R.id.share_btn);
+            initElement();
+            initActionListener();
+        }
+
+        private void initActionListener() {
             cbTask.setOnCheckedChangeListener(this);
             editBtn.setOnClickListener(this);
             deleteBtn.setOnClickListener(this);
             shareBtn.setOnClickListener(this);
         }
 
+        private void initElement(){
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
+            tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
+            cbTask = (CheckBox) itemView.findViewById(R.id.cbTask);
+            editBtn = (ImageButton) itemView.findViewById(R.id.edit_btn);
+            deleteBtn = (ImageButton) itemView.findViewById(R.id.delete_btn);
+            shareBtn = (ImageButton) itemView.findViewById(R.id.share_btn);
+            swipeLayout =  (SwipeLayout) itemView.findViewById(R.id.swipeLayout);
+            swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        }
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();

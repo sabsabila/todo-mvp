@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
+import pens.lab.app.belajaractivity.R;
 import pens.lab.app.belajaractivity.base.BaseFragmentHolderActivity;
 import pens.lab.app.belajaractivity.model.Task;
 
@@ -16,7 +17,7 @@ public class ToDoActivity extends BaseFragmentHolderActivity {
     protected void initializeFragment() {
         initializeView();
 
-        //btBack.setVisibility(View.GONE);
+        btBack.setImageResource(R.drawable.logout_icon);
         btOptionMenu.setVisibility(View.GONE);
 
         ToDoFragment toDoFragment = new ToDoFragment(btBack);
