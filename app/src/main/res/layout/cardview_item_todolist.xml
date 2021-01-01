@@ -36,7 +36,7 @@
                 android:text="Select an action : "
                 android:layout_marginTop="10dp"
                 android:textSize="8pt"
-                android:textColor="@color/myTextLight"/>
+                android:textColor="@color/colorInputText"/>
 
             <ImageButton
                 android:id="@+id/edit_btn"
