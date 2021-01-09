@@ -14,10 +14,10 @@
         android:theme="@style/BlueTheme">
         <activity android:name=".modul.input.InputActivity"></activity>
         <activity android:name=".modul.edit.EditActivity"></activity>
-        <activity android:name=".modul.todo.ToDoActivity"></activity>
+        <activity android:name=".modul.main.MainActivity"></activity>
         <activity android:name=".modul.register.RegisterActivity"></activity>
         <activity android:name=".modul.login.LoginActivity"></activity>
-        <activity android:name=".modul.main.MainActivity"></activity>
+        <activity android:name=".modul.todo.ToDoActivity"></activity>
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

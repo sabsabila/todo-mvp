@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import pens.lab.app.belajaractivity.modul.main.MainActivity;
+import pens.lab.app.belajaractivity.modul.todo.ToDoActivity;
 
 public class Splash extends Activity {
 

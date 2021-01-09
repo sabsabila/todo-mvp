@@ -36,14 +36,30 @@
                 android:text="Add" />
 
             <TextView
-                android:id="@+id/titleUnfinished"
+                android:id="@+id/swipeGuide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Swipe left to show options"
+                android:layout_below="@+id/separator"
+                android:textColor="@color/darkblue"/>
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_below="@+id/titleText"
+                android:background="@color/darkblue"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/titleUnfinished"
+                android:layout_below="@+id/swipeGuide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Unfinished Tasks"
                 android:textColor="@color/darkblue"
                 android:textSize="20sp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:textStyle="bold" />
 
@@ -54,9 +70,10 @@
                 android:background="@drawable/rounded_button_dark"
                 android:text="Finish Task"
                 android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/colorInputText"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/titleText"
+                android:layout_below="@+id/swipeGuide"
                 android:layout_above="@id/recyclerViewTodolist"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -108,7 +125,7 @@
                 android:textColor="@color/darkblue"
                 android:textSize="28sp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </ScrollView>

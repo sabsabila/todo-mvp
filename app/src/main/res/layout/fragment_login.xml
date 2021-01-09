@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login Page"
-            android:layout_marginTop="-50dp"
+            android:layout_marginTop="-20dp"
             android:textColor="@color/myLayoutColor"
             android:textSize="48sp"
             android:textStyle="bold" />
@@ -57,7 +57,7 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="40dp"
             android:drawableStart="@drawable/key_icon"
             android:hint="Password"
             android:textSize="8pt"
@@ -73,6 +73,12 @@
             android:text="@string/login"
             android:textStyle="bold"
             android:textSize="10pt"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/myTextLight"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="30dp"/>
 
         <Button
             android:id="@+id/bt_register"
