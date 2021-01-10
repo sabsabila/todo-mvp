@@ -25,6 +25,7 @@ public class EditInteractor implements EditContract.Interactor{
                 .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
                 .addBodyParameter("title", task.getTitle())
                 .addBodyParameter("description", task.getDescription())
+                .addBodyParameter("dueDate", task.getDue_date())
                 .build()
                 .getAsObject(ResponseMessage.class, new ParsedRequestListener<ResponseMessage>() {
                     @Override

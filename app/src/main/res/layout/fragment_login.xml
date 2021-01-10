@@ -29,6 +29,7 @@
             android:text="Login Page"
             android:layout_marginTop="-20dp"
             android:textColor="@color/myLayoutColor"
+            android:fontFamily="@font/muli"
             android:textSize="48sp"
             android:textStyle="bold" />
         <TextView
@@ -36,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Task.In | To Do List App"
+            android:fontFamily="@font/muli"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="80dp"
             android:textColor="@color/myLayoutColor"
@@ -71,6 +73,7 @@
             android:textColor="?attr/textWhiteColor"
             android:background="@drawable/rounded_button"
             android:text="@string/login"
+            android:fontFamily="@font/muli"
             android:textStyle="bold"
             android:textSize="10pt"/>
         <View
@@ -88,6 +91,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_button"
             android:text="Register"
+            android:fontFamily="@font/muli"
             android:textStyle="bold"
             android:textSize="10pt"/>
 
@@ -98,6 +102,7 @@
             android:text="Sign in With Google"
             android:textColor="@color/navyBlue"
             android:drawableStart="@drawable/google_icon"
+            android:fontFamily="@font/muli"
             android:layout_marginTop="20dp"
             android:background="@drawable/google_button"/>
     </LinearLayout>

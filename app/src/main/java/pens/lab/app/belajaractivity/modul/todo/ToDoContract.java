@@ -12,10 +12,10 @@ public interface ToDoContract {
     interface View extends BaseView<Presenter> {
         void redirectToInput();
         void redirectToEdit(int id);
+        void redirectToList(int tag);
         void showAlertDialog(final int position);
         void showLogoutAlert();
         void setTask(List<Task> task);
-        void setCheckedTask(List<Task> task);
         void startLoading();
         void endLoading();
         void showError(String message);
@@ -27,11 +27,11 @@ public interface ToDoContract {
 
     interface Presenter extends BasePresenter {
         void inputItem();
-        void getTasks();
+        void goToList(int tag);
+        void getTasks(int tag);
         void editList(final int index);
         void deleteItem(final int position);
-        void checkTasks(List<Integer> id);
-        void uncheckTasks(List<Integer> id);
+        void checkTasks(List<Integer> id, int tag);
         void getUser();
         void logout();
     }

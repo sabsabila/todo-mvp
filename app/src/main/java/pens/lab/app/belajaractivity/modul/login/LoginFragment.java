@@ -121,9 +121,12 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
     }
 
     public void setBtLoginClick(){
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
-        mPresenter.performLogin(email,password);
+        if(etEmail.getText() != null && etPassword.getText() != null){
+            String email = etEmail.getText().toString();
+            String password = etPassword.getText().toString();
+            mPresenter.performLogin(email,password);
+        }else
+            Toast.makeText(activity, "Email & Password Must be Filled", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -134,6 +137,7 @@ public class LoginFragment extends BaseFragment<LoginActivity, LoginContract.Pre
     @Override
     public void redirectToList() {
             Intent intent = new Intent(activity, ToDoActivity.class);
+            intent.putExtra("tag", 0);
             startActivity(intent);
             activity.finish();
     }

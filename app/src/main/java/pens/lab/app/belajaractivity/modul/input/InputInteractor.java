@@ -1,5 +1,7 @@
 package pens.lab.app.belajaractivity.modul.input;
 
+import android.util.Log;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
@@ -24,6 +26,7 @@ public class InputInteractor implements InputContract.Interactor{
                 .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
                 .addBodyParameter("title", task.getTitle())
                 .addBodyParameter("description", task.getDescription())
+                .addBodyParameter("dueDate", task.getDue_date())
                 .build()
                 .getAsObject(ResponseMessage.class, new ParsedRequestListener<ResponseMessage>() {
                     @Override
@@ -33,6 +36,7 @@ public class InputInteractor implements InputContract.Interactor{
                     @Override
                     public void onError(ANError error) {
                         callback.requestFailed(ErrorResponse.requestFailed);
+                        Log.d("tag", error.getMessage() + error.getErrorCode());
                     }
                 });
     }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:id="@+id/swipeLayout">
     <!-- Bottom View Start-->
     <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:background="@color/darkblue"
         card_view:cardCornerRadius="6dp"
         card_view:cardElevation="3dp"
@@ -69,8 +70,6 @@
     <!-- Bottom View End-->
 
     <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/topView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,36 +79,50 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_margin="5dp"
             android:padding="5dp">
 
             <CheckBox
                 android:id="@+id/cbTask"
-                android:gravity="top"
-                android:layout_alignParentTop="true"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp"/>
 
             <TextView
                 android:id="@+id/tvTodolistTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/cbTask"
                 android:layout_marginLeft="15dp"
+                android:layout_toEndOf="@+id/cbTask"
+                android:fontFamily="@font/muli"
                 android:text="Title"
+                android:textColor="@color/darkblue"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTodolistDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/cbTask"
                 android:layout_below="@+id/tvTodolistTitle"
                 android:layout_marginLeft="15dp"
-                android:text="Description"/>
+                android:layout_toEndOf="@+id/cbTask"
+                android:fontFamily="@font/muli"
+                android:textColor="@color/darkblue"
+                android:text="Description" />
 
+            <TextView
+                android:id="@+id/tvTodolistDueDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTodolistDescription"
+                android:layout_marginLeft="15dp"
+                android:layout_toEndOf="@+id/cbTask"
+                android:fontFamily="@font/muli"
+                android:textStyle="bold"
+                android:textColor="@color/babyBlue"
+                android:text="Due Date" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </com.daimajia.swipe.SwipeLayout>

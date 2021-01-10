@@ -32,4 +32,9 @@ public class InputPresenter implements InputContract.Presenter{
             }
         });
     }
+
+    @Override
+    public void goToList(int tag) {
+        view.redirectToList(tag);
+    }
 }

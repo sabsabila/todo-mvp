@@ -9,6 +9,7 @@ public interface EditContract {
     interface View extends BaseView<Presenter> {
         void startLoading();
         void endLoading();
+        void redirectToList(int tag);
         void showError(String message);
         void returnSuccess(String message);
         void setTask(Task task);
@@ -17,6 +18,7 @@ public interface EditContract {
     interface Presenter extends BasePresenter {
         void performEdit(int id, Task task);
         void getTask(int id);
+        void goToList(int tag);
     }
 
     interface Interactor{

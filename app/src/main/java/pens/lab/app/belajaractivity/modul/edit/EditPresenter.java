@@ -52,4 +52,9 @@ public class EditPresenter implements EditContract.Presenter{
         });
     }
 
+    @Override
+    public void goToList(int tag) {
+        view.redirectToList(tag);
+    }
+
 }

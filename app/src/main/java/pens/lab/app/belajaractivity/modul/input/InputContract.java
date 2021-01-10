@@ -9,12 +9,14 @@ public interface InputContract {
     interface View extends BaseView<Presenter> {
         void startLoading();
         void endLoading();
+        void redirectToList(int tag);
         void showError(String message);
         void returnSuccess(String message);
     }
 
     interface Presenter extends BasePresenter {
         void performAdd(Task task);
+        void goToList(int tag);
     }
 
     interface Interactor {

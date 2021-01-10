@@ -24,26 +24,17 @@ public class ToDoPresenter implements ToDoContract.Presenter{
     }
 
     @Override
-    public void getTasks() {
+    public void goToList(int tag) {
+        view.redirectToList(tag);
+    }
+
+    @Override
+    public void getTasks(int tag) {
         view.startLoading();
-        interactor.requestTasks(0, new RequestCallback<List<Task>>() {
+        interactor.requestTasks(tag, new RequestCallback<List<Task>>() {
             @Override
             public void requestSuccess(List<Task> data) {
                 view.setTask(data);
-                view.endLoading();
-            }
-
-            @Override
-            public void requestFailed(String errorMessage) {
-                view.showError(errorMessage);
-                view.endLoading();
-            }
-        });
-
-        interactor.requestTasks(1, new RequestCallback<List<Task>>() {
-            @Override
-            public void requestSuccess(List<Task> data) {
-                view.setCheckedTask(data);
                 view.endLoading();
             }
 
@@ -77,24 +68,9 @@ public class ToDoPresenter implements ToDoContract.Presenter{
     }
 
     @Override
-    public void checkTasks(List<Integer> id) {
+    public void checkTasks(List<Integer> id, int tag) {
         view.startLoading();
-        interactor.requestCheck(id, "1", new RequestCallback<String>() {
-            @Override
-            public void requestSuccess(String data) {
-                view.checkSuccess();
-            }
-            @Override
-            public void requestFailed(String errorMessage) {
-                view.showError(errorMessage);
-            }
-        });
-    }
-
-    @Override
-    public void uncheckTasks(List<Integer> id) {
-        view.startLoading();
-        interactor.requestCheck(id, "0", new RequestCallback<String>() {
+        interactor.requestCheck(id, String.valueOf(tag), new RequestCallback<String>() {
             @Override
             public void requestSuccess(String data) {
                 view.checkSuccess();

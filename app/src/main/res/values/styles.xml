@@ -33,9 +33,9 @@
     </style>
 
     <style name="BlueTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/blueOne</item>
+        <item name="colorPrimary">@color/darkblue</item>
         <item name="colorPrimaryDark">@color/darkblue</item>
-        <item name="tabBackgroundColor">@color/blueOne</item>
+        <item name="tabBackgroundColor">@color/darkblue</item>
         <item name="toolbarBackgroundColor">@color/darkblue</item>
         <item name="textDarkColor">@color/darkblue</item>
         <item name="textTabColor">@color/darkblue</item>
@@ -44,10 +44,15 @@
         <item name="imageTransparentOverlay">@color/navyBlue</item>
         <item name="android:textViewStyle">@style/RobotoTextViewStyle</item>
         <item name="android:buttonStyle">@style/RobotoButtonStyle</item>
+        <item name="android:fontFamily">@font/muli</item>
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/darkblue</item>
     </style>
 
     <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">

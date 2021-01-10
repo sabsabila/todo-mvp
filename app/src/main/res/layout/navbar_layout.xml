@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/navbarLight">
+
+    <View
+        android:id="@+id/navbar_line"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/navbar_shadow" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/navbarLight"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/task_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="10dp"
+            android:layout_height="match_parent"
+            android:background="@color/navbarLight"
+            android:src="@drawable/list_icon_drawable"/>
+
+        <ImageButton
+            android:id="@+id/finished_task_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="10dp"
+            android:layout_height="match_parent"
+            android:background="@color/navbarLight"
+            android:src="@drawable/finished_icon_drawable"/>
+    </LinearLayout>
+</RelativeLayout>

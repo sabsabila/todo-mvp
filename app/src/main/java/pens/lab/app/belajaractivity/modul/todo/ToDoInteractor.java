@@ -30,7 +30,7 @@ public class ToDoInteractor implements ToDoContract.Interactor{
     }
 
     @Override
-    public void requestCheck(List<Integer> id, String check,final RequestCallback<String> callback) {
+    public void requestCheck(List<Integer> id, String check, final RequestCallback<String> callback) {
         JSONObject idObject = getJson(id);
         AndroidNetworking.put(ApiConstant.BASE_URL + "task/check/" + check)
                 .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())

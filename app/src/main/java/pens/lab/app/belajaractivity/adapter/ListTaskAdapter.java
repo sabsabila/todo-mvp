@@ -1,5 +1,6 @@
 package pens.lab.app.belajaractivity.adapter;
 
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
 
+import java.util.Calendar;
 import java.util.List;
 
 import pens.lab.app.belajaractivity.R;
@@ -26,6 +28,7 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
         TextView tvTitle;
         TextView tvDescription;
+        TextView tvDueDate;
         CheckBox cbTask;
         ImageButton editBtn, deleteBtn, shareBtn;
         SwipeLayout swipeLayout;
@@ -45,6 +48,7 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
         private void initElement(){
             tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
+            tvDueDate = (TextView) itemView.findViewById(R.id.tvTodolistDueDate);
             cbTask = (CheckBox) itemView.findViewById(R.id.cbTask);
             editBtn = (ImageButton) itemView.findViewById(R.id.edit_btn);
             deleteBtn = (ImageButton) itemView.findViewById(R.id.delete_btn);
@@ -89,6 +93,16 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
     public void onBindViewHolder(ListTaskAdapter.MyViewHolder holder, int position) {
         holder.tvTitle.setText(mDataset.get(position).getTitle());
         holder.tvDescription.setText(mDataset.get(position).getDescription());
+        if(mDataset.get(position).getDue_date() != null){
+            String[] date = mDataset.get(position).getDue_date().split("-");
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, Integer.parseInt(date[0]));
+            calendar.set(Calendar.MONTH, Integer.parseInt(date[1])-1);
+            calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[2]));
+            CharSequence dateFormatted = DateFormat.format("EEE, d MMM yyyy", calendar);
+            holder.tvDueDate.setText("Due By | " + dateFormatted);
+        }else
+            holder.tvDueDate.setText("No Due Date");
     }
 
     @Override

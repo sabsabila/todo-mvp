@@ -22,7 +22,7 @@
     <color name="pantoneTransparent">#6605c3de</color>
     <color name="pantoneDarkTransparent">#8c017787</color>
     <color name="pantone331c">#05c3de</color>
-
+    #2B2F70
     <!--pallete two-->
     <color name="darkblue">#2B2F70</color>
     <color name="blueOne">#434AB0</color>
@@ -33,5 +33,7 @@
     <color name="lightBlue">#606AFC</color>
     <color name="splash">#57588F</color>
     <color name="colorInputText">#F2F2F2</color>
+    <color name="navbar">#EEEFFF</color>
+    <color name="navbarLight">#F8F8F8</color>
 
 </resources>
