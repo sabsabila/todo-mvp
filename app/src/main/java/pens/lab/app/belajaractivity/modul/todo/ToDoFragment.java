@@ -340,18 +340,21 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
 
     @Override
     public void onAlarmClick(final int position, View v, String tag) {
-        Calendar mcurrentTime = Calendar.getInstance();
-        final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(activity, R.style.MyTimePickerDialogTheme, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                String selectedTime = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute) + ":" + "00";
-                mPresenter.setAlarm(tasks.get(position).getTask_id(), selectedTime, position);
-            }
-        }, hour, minute, true);
-        mTimePicker.show();
+        if(tasks.get(position).getDue_date() != null){
+            Calendar mcurrentTime = Calendar.getInstance();
+            final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+            int minute = mcurrentTime.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker;
+            mTimePicker = new TimePickerDialog(activity, R.style.MyTimePickerDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                    String selectedTime = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute) + ":" + "00";
+                    mPresenter.setAlarm(tasks.get(position).getTask_id(), selectedTime, position);
+                }
+            }, hour, minute, true);
+            mTimePicker.show();
+        }else
+            Toast.makeText(activity, "Please set due date before setting alarm.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
