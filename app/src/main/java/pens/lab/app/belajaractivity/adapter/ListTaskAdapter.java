@@ -26,11 +26,9 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
     private final String tag;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener{
-        TextView tvTitle;
-        TextView tvDescription;
-        TextView tvDueDate;
+        TextView tvTitle, tvDescription, tvDueDate, tvAlarm;
         CheckBox cbTask;
-        ImageButton editBtn, deleteBtn, shareBtn;
+        ImageButton editBtn, deleteBtn, shareBtn, alarmBtn;
         SwipeLayout swipeLayout;
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -43,16 +41,19 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
             editBtn.setOnClickListener(this);
             deleteBtn.setOnClickListener(this);
             shareBtn.setOnClickListener(this);
+            alarmBtn.setOnClickListener(this);
         }
 
         private void initElement(){
             tvTitle = (TextView) itemView.findViewById(R.id.tvTodolistTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.tvTodolistDescription);
             tvDueDate = (TextView) itemView.findViewById(R.id.tvTodolistDueDate);
+            tvAlarm = (TextView) itemView.findViewById(R.id.tvTodolistAlarm);
             cbTask = (CheckBox) itemView.findViewById(R.id.cbTask);
             editBtn = (ImageButton) itemView.findViewById(R.id.edit_btn);
             deleteBtn = (ImageButton) itemView.findViewById(R.id.delete_btn);
             shareBtn = (ImageButton) itemView.findViewById(R.id.share_btn);
+            alarmBtn = (ImageButton) itemView.findViewById(R.id.alarm_btn);
             swipeLayout =  (SwipeLayout) itemView.findViewById(R.id.swipeLayout);
             swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         }
@@ -65,6 +66,8 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
                 myClickListener.onDeleteClick(position, view, tag);
             if(view.getId() == shareBtn.getId())
                 myClickListener.onShareClick(position, view, tag);
+            if(view.getId() == alarmBtn.getId())
+                myClickListener.onAlarmClick(position, view, tag);
         }
 
         @Override
@@ -103,6 +106,9 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
             holder.tvDueDate.setText("Due By | " + dateFormatted);
         }else
             holder.tvDueDate.setText("No Due Date");
+        if(mDataset.get(position).getAlarm_time() != null){
+            holder.tvAlarm.setText("Alarm set at " + mDataset.get(position).getAlarm_time().substring(0, mDataset.get(position).getAlarm_time().length()-3));
+        }
     }
 
     @Override
@@ -122,6 +128,7 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.MyView
         void onEditClick(int position, View v, String tag);
         void onDeleteClick(int position, View v, String tag);
         void onShareClick(int position, View v, String tag);
+        void onAlarmClick(int position, View v, String tag);
     }
 
     public interface MyOnCheckedListener{

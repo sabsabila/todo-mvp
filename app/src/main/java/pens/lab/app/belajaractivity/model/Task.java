@@ -9,8 +9,9 @@ public class Task {
     private int checked;
     private String created_at;
     private String updated_at;
+    private String alarm_time;
 
-    public Task(int task_id, int user_id, String title, String description, String due_date, int checked, String created_at, String updated_at) {
+    public Task(int task_id, int user_id, String title, String description, String due_date, int checked, String created_at, String updated_at, String alarm_time) {
         this.task_id = task_id;
         this.user_id = user_id;
         this.title = title;
@@ -19,6 +20,7 @@ public class Task {
         this.checked = checked;
         this.created_at = created_at;
         this.updated_at = updated_at;
+        this.alarm_time = alarm_time;
     }
 
     public Task(String title, String description, String due_date) {
@@ -89,5 +91,13 @@ public class Task {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public String getAlarm_time() {
+        return alarm_time;
+    }
+
+    public void setAlarm_time(String alarm_time) {
+        this.alarm_time = alarm_time;
     }
 }

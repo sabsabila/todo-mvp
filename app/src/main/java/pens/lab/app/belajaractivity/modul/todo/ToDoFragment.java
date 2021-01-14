@@ -1,6 +1,11 @@
 package pens.lab.app.belajaractivity.modul.todo;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import pens.lab.app.belajaractivity.R;
@@ -30,15 +38,14 @@ import pens.lab.app.belajaractivity.modul.edit.EditActivity;
 import pens.lab.app.belajaractivity.modul.input.InputActivity;
 import pens.lab.app.belajaractivity.modul.login.LoginActivity;
 import pens.lab.app.belajaractivity.adapter.ListTaskAdapter;
+import pens.lab.app.belajaractivity.utils.AlarmReceiver;
 import pens.lab.app.belajaractivity.utils.UtilProvider;
 
 public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presenter> implements ToDoContract.View, ListTaskAdapter.MyClickListener, ListTaskAdapter.MyOnCheckedListener{
 
-    ImageButton addButton;
-    ImageButton btBack;
-    ImageButton taskListButton;
-    ImageButton finishedTaskButton;
-    TextView titleTaskTv;
+    ImageButton addButton, btBack, taskListButton, finishedTaskButton;
+    ImageView emptyIcon;
+    TextView titleTaskTv, tvNoTask;
     Button actionButton;
     TextView title;
     RecyclerView taskListRecyclerView;
@@ -73,6 +80,7 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         mPresenter.getTasks(checkTag);
         mPresenter.getUser();
         adjustView();
+        createNotificationChannel();
     }
 
     private void adjustView(){
@@ -94,6 +102,8 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         actionButton = fragmentView.findViewById(R.id.taskButtonAction);
         title = fragmentView.findViewById(R.id.titleText);
         taskListRecyclerView = fragmentView.findViewById(R.id.recyclerViewTodolist);
+        emptyIcon = fragmentView.findViewById(R.id.emptyIcon);
+        tvNoTask = fragmentView.findViewById(R.id.tvNotask);
     }
 
     private void setOnClickListener() {
@@ -176,14 +186,20 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
 
     @Override
     public void setTask(List<Task> task) {
-        String adapterTag = "";
-        this.tasks = task;
-        if(checkTag == 0)
-            adapterTag = "uncheck";
-        else
-            adapterTag = "check";
-        taskListAdapter = new ListTaskAdapter(tasks, this, this, adapterTag);
-        taskListRecyclerView.setAdapter(taskListAdapter);
+        if(task.size() > 0){
+            String adapterTag = "";
+            this.tasks = task;
+            if(checkTag == 0)
+                adapterTag = "uncheck";
+            else
+                adapterTag = "check";
+            taskListAdapter = new ListTaskAdapter(tasks, this, this, adapterTag);
+            taskListRecyclerView.setAdapter(taskListAdapter);
+        }else{
+            tvNoTask.setVisibility(View.VISIBLE);
+            emptyIcon.setVisibility(View.VISIBLE);
+            actionButton.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -199,6 +215,44 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
     @Override
     public void showError(String message) {
         Toast.makeText(activity, message,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setAlarmSuccess(String message, String time, int index) {
+        Toast.makeText(activity, message,Toast.LENGTH_SHORT).show();
+        AlarmManager alarmMgr = (AlarmManager) activity.getSystemService(activity.ALARM_SERVICE);
+        Intent receiverIntent = new Intent(activity, AlarmReceiver.class);
+        receiverIntent.putExtra("title", tasks.get(index).getTitle());
+        receiverIntent.putExtra("description", tasks.get(index).getDescription());
+        receiverIntent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(activity, 0, receiverIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        String[] alarmTime = time.split(":");
+        String[] date = tasks.get(index).getDue_date().split("-");
+        Calendar cal=Calendar.getInstance();
+        cal.set(Calendar.MONTH, 0);
+        cal.set(Calendar.YEAR, 2021);
+        cal.set(Calendar.DAY_OF_MONTH, 14);
+        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(alarmTime[0]));
+        cal.set(Calendar.MINUTE, Integer.parseInt(alarmTime[1]));
+        cal.set(Calendar.SECOND, 0);
+        long timeInput = cal.getTimeInMillis();
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, timeInput, alarmIntent);
+
+        Intent intent = new Intent(activity, ToDoActivity.class);
+        intent.putExtra("tag", checkTag);
+        startActivity(intent);
+    }
+
+    private void createNotificationChannel(){
+        CharSequence name = "TodoListAlarm";
+        String description = "Channel for alarm";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel("notification", name, importance);
+        channel.setDescription(description);
+
+        NotificationManager manager = activity.getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
     }
 
     @Override
@@ -282,6 +336,22 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
 
         Intent shareIntent = Intent.createChooser(sendIntent, "Share Task Via :");
         startActivity(shareIntent);
+    }
+
+    @Override
+    public void onAlarmClick(final int position, View v, String tag) {
+        Calendar mcurrentTime = Calendar.getInstance();
+        final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+        mTimePicker = new TimePickerDialog(activity, R.style.MyTimePickerDialogTheme, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                String selectedTime = String.valueOf(selectedHour) + ":" + String.valueOf(selectedMinute) + ":" + "00";
+                mPresenter.setAlarm(tasks.get(position).getTask_id(), selectedTime, position);
+            }
+        }, hour, minute, true);
+        mTimePicker.show();
     }
 
     @Override

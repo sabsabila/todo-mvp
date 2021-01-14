@@ -46,6 +46,24 @@ public class ToDoPresenter implements ToDoContract.Presenter{
         });
     }
 
+    @Override
+    public void setAlarm(int id, final String time, final int index) {
+        view.startLoading();
+        interactor.requestSetTime(id, time, new RequestCallback<String>() {
+            @Override
+            public void requestSuccess(String data) {
+                view.setAlarmSuccess(data, time, index);
+                view.endLoading();
+            }
+
+            @Override
+            public void requestFailed(String errorMessage) {
+                view.showError(errorMessage);
+                view.endLoading();
+            }
+        });
+    }
+
     public void editList(int id){
         view.redirectToEdit(id);
     }

@@ -19,6 +19,7 @@ public interface ToDoContract {
         void startLoading();
         void endLoading();
         void showError(String message);
+        void setAlarmSuccess(String message, String time, int index);
         void returnSuccess(String message);
         void checkSuccess();
         void setUser(User user);
@@ -29,6 +30,7 @@ public interface ToDoContract {
         void inputItem();
         void goToList(int tag);
         void getTasks(int tag);
+        void setAlarm(int id, String time, int index);
         void editList(final int index);
         void deleteItem(final int position);
         void checkTasks(List<Integer> id, int tag);
@@ -41,6 +43,7 @@ public interface ToDoContract {
         void requestTasks(int check, RequestCallback<List<Task>> callback);
         void requestUser(RequestCallback<User> callback);
         void requestDelete(int id, RequestCallback<String> callback);
+        void requestSetTime(int id, String time, RequestCallback<String> callback);
         void logout();
     }
 }

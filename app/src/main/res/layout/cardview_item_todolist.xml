@@ -6,8 +6,6 @@
     android:id="@+id/swipeLayout">
     <!-- Bottom View Start-->
     <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/darkblue"
@@ -25,19 +23,28 @@
             android:id="@+id/bottom_wrapper"
             android:layout_width="match_parent"
             android:weightSum="1"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="end">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:gravity="center_vertical"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="-20dp"
                 android:text="Select an action : "
-                android:layout_marginTop="10dp"
                 android:textSize="8pt"
                 android:textColor="@color/colorInputText"/>
+
+            <ImageButton
+                android:id="@+id/alarm_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toStartOf="@+id/edit_btn"
+                android:background="@drawable/alarm_icon"/>
 
             <ImageButton
                 android:id="@+id/edit_btn"
@@ -72,14 +79,14 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/topView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         card_view:cardCornerRadius="6dp"
         card_view:cardElevation="3dp"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:padding="5dp">
 
@@ -91,7 +98,7 @@
 
             <TextView
                 android:id="@+id/tvTodolistTitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="15dp"
@@ -114,15 +121,26 @@
 
             <TextView
                 android:id="@+id/tvTodolistDueDate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvTodolistDescription"
                 android:layout_marginLeft="15dp"
-                android:layout_toEndOf="@+id/cbTask"
+                android:layout_toRightOf="@+id/cbTask"
+                android:layout_below="@+id/tvTodolistDescription"
                 android:fontFamily="@font/muli"
                 android:textStyle="bold"
                 android:textColor="@color/babyBlue"
-                android:text="Due Date" />
+                android:text="No Due Date" />
+
+            <TextView
+                android:id="@+id/tvTodolistAlarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="15dp"
+                android:fontFamily="@font/muli"
+                android:textSize="6pt"
+                android:textColor="@color/babyBlue"
+                android:text="No Alarm Set" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </com.daimajia.swipe.SwipeLayout>

@@ -117,6 +117,24 @@ public class ToDoInteractor implements ToDoContract.Interactor{
     }
 
     @Override
+    public void requestSetTime(int id, String time, final RequestCallback<String> callback) {
+        AndroidNetworking.put(ApiConstant.BASE_URL + "task/time/" + id)
+                .addHeaders("Authorization", "Bearer " + sharedPreferencesUtil.getToken())
+                .addBodyParameter("alarmTime", time)
+                .build()
+                .getAsObject(ResponseMessage.class, new ParsedRequestListener<ResponseMessage>() {
+                    @Override
+                    public void onResponse(ResponseMessage response) {
+                        callback.requestSuccess(response.message);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        callback.requestFailed(ErrorResponse.requestFailed);
+                    }
+                });
+    }
+
+    @Override
     public void logout() {
         sharedPreferencesUtil.clear();
     }
