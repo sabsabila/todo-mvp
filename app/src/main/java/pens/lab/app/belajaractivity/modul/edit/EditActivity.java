@@ -19,7 +19,5 @@ public class EditActivity extends BaseFragmentHolderActivity {
 
         EditFragment editFragment = new EditFragment(intent.getIntExtra("id",0));
         setCurrentFragment(editFragment, true);
-
     }
-
 }

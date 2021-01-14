@@ -1,10 +1,6 @@
 package pens.lab.app.belajaractivity.model;
 
-import java.io.Serializable;
-
-import pens.lab.app.belajaractivity.base.BaseModel;
-
-public class Task extends BaseModel implements Serializable {
+public class Task {
     private int task_id;
     private int user_id;
     private String title;

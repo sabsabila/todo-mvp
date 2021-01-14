@@ -88,7 +88,6 @@ public class EditFragment extends BaseFragment<InputActivity, EditContract.Prese
     private void initView() {
         mPresenter = new EditPresenter(this, new EditInteractor(UtilProvider.getSharedPreferencesUtil()));
         mPresenter.start();
-        mPresenter.getTask(id);
         saveButton = fragmentView.findViewById(R.id.btnInput);
         saveButton.setText("Save");
         dataTitle = fragmentView.findViewById(R.id.inputTitle);
@@ -96,6 +95,7 @@ public class EditFragment extends BaseFragment<InputActivity, EditContract.Prese
         finishedTaskButton = fragmentView.findViewById(R.id.finished_task_button);
         dataDescription = fragmentView.findViewById(R.id.inputDescription);
         dueDateEt = fragmentView.findViewById(R.id.inputDueDate);
+        mPresenter.getTask(id);
         setTitle("Edit Item");
     }
 
