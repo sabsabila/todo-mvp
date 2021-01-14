@@ -280,7 +280,7 @@ public class ToDoFragment extends BaseFragment<ToDoActivity, ToDoContract.Presen
         sendIntent.putExtra(Intent.EXTRA_TEXT, text);
         sendIntent.setType("text/plain");
 
-        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        Intent shareIntent = Intent.createChooser(sendIntent, "Share Task Via :");
         startActivity(shareIntent);
     }
 

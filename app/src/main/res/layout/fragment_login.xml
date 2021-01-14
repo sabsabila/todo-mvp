@@ -36,7 +36,7 @@
             android:id="@+id/loginSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Task.In | To Do List App"
+            android:text="Task.Io | To Do List App"
             android:fontFamily="@font/muli"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="80dp"
